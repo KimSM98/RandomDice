@@ -41,3 +41,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: DiceEye
+    uniqueID: 4159739867
+    locked: 0
