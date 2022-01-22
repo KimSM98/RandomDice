@@ -53,3 +53,6 @@ TagManager:
   - name: DiceEye
     uniqueID: 4159739867
     locked: 0
+  - name: Enemy
+    uniqueID: 3266431553
+    locked: 0

@@ -64,14 +64,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\BoardInfo.cs" />
-    <Compile Include="Assets\Scripts\Dice.cs" />
-    <Compile Include="Assets\Scripts\DiceEye.cs" />
-    <Compile Include="Assets\Scripts\DiceManager.cs" />
-    <Compile Include="Assets\Scripts\DiceSpawner.cs" />
-    <Compile Include="Assets\Scripts\PlayerController.cs" />
-    <Compile Include="Assets\Scripts\ScriptableObjects\Dice\DiceType.cs" />
-    <Compile Include="Assets\Scripts\SpawnPosition.cs" />
+    <Compile Include="Assets\Scripts\Control\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\Dice\BoardInfo.cs" />
+    <Compile Include="Assets\Scripts\Dice\Dice.cs" />
+    <Compile Include="Assets\Scripts\Dice\DiceEye.cs" />
+    <Compile Include="Assets\Scripts\Dice\DiceManager.cs" />
+    <Compile Include="Assets\Scripts\Dice\DiceSpawnPosition.cs" />
+    <Compile Include="Assets\Scripts\Dice\DiceSpawner.cs" />
+    <Compile Include="Assets\Scripts\Enemy.cs" />
+    <Compile Include="Assets\Scripts\EnemyManager.cs" />
+    <Compile Include="Assets\Scripts\EnemyRoad.cs" />
+    <Compile Include="Assets\Scripts\EnemySpawner.cs" />
+    <Compile Include="Assets\Scripts\NormalMonster.cs" />
+    <Compile Include="Assets\Scripts\Road.cs" />
+    <Compile Include="Assets\Scripts\ScriptableObjects\DiceType\DiceType.cs" />
+    <Compile Include="Assets\Scripts\ScriptableObjects\MonsterStatus.cs" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.9f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
