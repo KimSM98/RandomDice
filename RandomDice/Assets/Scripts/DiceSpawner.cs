@@ -15,14 +15,8 @@ public class DiceSpawner : MonoBehaviour
         numOfDice = 0;
     }
 
-    public void SpawnDice()
+    public Dice SpawnDice()
     {
-        if(numOfDice >= 15)
-        {
-            Debug.Log("소환 가능한 다이스의 최대 개수에 도달했습니다.");
-            return;
-        }
-        
         // Random Position
         Vector2 randPos = spawnPos.GetRandomEmptyPos();
         
@@ -33,6 +27,8 @@ public class DiceSpawner : MonoBehaviour
         dice.InitDice(diceTypes[randNum]);
 
         numOfDice++;
+
+        return dice;
     }
 
 }

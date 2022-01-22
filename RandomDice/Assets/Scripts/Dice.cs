@@ -14,7 +14,12 @@ public class Dice : MonoBehaviour
 
     private List<DiceEye> diceEyes;
 
-    // 타겟
+    // 타겟 필요
+
+    [SerializeField]
+    private float moveSpeed = 5f;
+    private Vector2 initPos;
+    private bool returnToInitPos;
 
     private void Awake()
     {
@@ -24,6 +29,28 @@ public class Dice : MonoBehaviour
 
     private void Start()
     {
+        initPos = transform.position;
+        returnToInitPos = false;
+    }
+
+    private void Update()
+    {
+        if(returnToInitPos)
+        {
+            MoveToInitPos();
+
+            if (ReachedInitPos())
+                returnToInitPos = false;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (returnToInitPos) return;
+
+        Dice collDice = collision.GetComponent<Dice>();
+        if (collDice != null)
+            DiceCollision(collDice);
     }
 
     public void InitDice(DiceType _type)
@@ -47,10 +74,20 @@ public class Dice : MonoBehaviour
         diceEye.GetComponent<SpriteRenderer>().color = diceType.diceEyeColor;
         diceEyes.Add(diceEye);
 
-        ArrangeDicePostion();
+        ArrangeDiceEyePostion();
     }
 
-    private void ArrangeDicePostion()
+    public void Merge()
+    {
+        CreateDiceEye();
+    }
+
+    public string GetDiceTypeName()
+    {
+        return diceType.typeName;
+    }
+
+    private void ArrangeDiceEyePostion()
     {
         int count = diceEyes.Count;
         if (count == 1 || count == 3 || count == 5) return;
@@ -69,6 +106,40 @@ public class Dice : MonoBehaviour
                 diceEyes[count - 2].transform.localPosition = new Vector3(-0.133f, 0);
                 diceEyes[count - 1].transform.localPosition = new Vector3(0.133f, 0);
                 break;
+        }
+    }
+
+    private void MoveToInitPos()
+    {
+        transform.position = Vector2.Lerp(transform.position, initPos, moveSpeed * Time.deltaTime);
+    }
+
+    private bool ReachedInitPos()
+    {
+        Vector2 currentPos = transform.position;
+        if (Vector2.Distance(currentPos, initPos) < 0.001f)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private void DiceCollision(Dice collDice)
+    {
+        // 현재 상황
+        // 두 다이스가 충돌하고 있기 때문에 플레이어가 잡고 있는 다이스가 없어지고, 
+        // 안 잡고 있는 다이스가 Merge되도록
+        string collDiceType = collDice.GetDiceTypeName();
+        if (diceType.typeName == collDiceType)
+        {
+            Debug.Log("같은 타입 입니다. 머지");
+            //collDice.Merge();
+            //this.gameObject.SetActive(false);
+        }
+        else
+        {
+            returnToInitPos = true;
         }
     }
 }

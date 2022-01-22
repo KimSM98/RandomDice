@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Dice.cs" />
     <Compile Include="Assets\Scripts\DiceEye.cs" />
+    <Compile Include="Assets\Scripts\DiceManager.cs" />
     <Compile Include="Assets\Scripts\DiceSpawner.cs" />
     <Compile Include="Assets\Scripts\ScriptableObjects\Dice\DiceType.cs" />
     <Compile Include="Assets\Scripts\SpawnPosition.cs" />

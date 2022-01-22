@@ -17,4 +17,4 @@ MonoBehaviour:
   attackSpeed: 0.45
   targetType: 0
   sprite: {fileID: 21300000, guid: ce0a52a27b8b6eb428acb00596c8677b, type: 3}
-  diceEyeColor: {r: 0.2198736, g: 0.764151, b: 0.7357777, a: 1}
+  diceEyeColor: {r: 0, g: 0.82745105, b: 0.654902, a: 1}
