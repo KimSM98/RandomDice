@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class Road : MonoBehaviour
 {
+    [SerializeField]
     private Road nextRoad;
-
-    private void Start()
-    {
-        nextRoad = null;
-    }
 
     public void SetNextRoad(Road road)
     {
         nextRoad = road;
+    }
+
+    public Road GetNextRoad()
+    {
+        return nextRoad;
     }
 
     private void OnDrawGizmos()

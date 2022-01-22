@@ -6,9 +6,6 @@ public class EnemyRoad : MonoBehaviour
 {
     public Road[] roads;
 
-    private Road startRoad;
-    private Road endRoad;
-
     private void Start()
     {
         InitRoads();
@@ -20,9 +17,6 @@ public class EnemyRoad : MonoBehaviour
         {
             roads[i].SetNextRoad(roads[i + 1]);
         }
-
-        startRoad = roads[0];
-        endRoad = roads[roads.Length - 1];
     }
 
     public Road GetRoad(int num)

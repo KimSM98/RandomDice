@@ -4,5 +4,12 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    // Spawn할 때 Road 정보 넣음
+    public Enemy SpawnEnemy(Enemy enemyPrefab, Road startRoad)
+    {
+        Vector2 spawnPos = startRoad.transform.position;
+        Enemy enemy = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+        enemy.SetCurrentRoad(startRoad);
+
+        return enemy;
+    }
 }
