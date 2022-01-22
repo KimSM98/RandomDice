@@ -186,7 +186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96791b837e2c7854dacb761c4349fd0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeDice: []
+  activeDices: []
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -428,6 +428,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec626670fd0540543b5b80de4e62199b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedDice: {fileID: 0}
 --- !u!4 &1265985997
 Transform:
   m_ObjectHideFlags: 0
@@ -516,6 +517,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4919172190828298952, guid: b1586c6bb8bfe3744941b60e66dc0d9e,
+        type: 3}
+      propertyPath: m_SortingLayerID
+      value: -438259095
+      objectReference: {fileID: 0}
+    - target: {fileID: 4919172190828298952, guid: b1586c6bb8bfe3744941b60e66dc0d9e,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4919172190828298953, guid: b1586c6bb8bfe3744941b60e66dc0d9e,
         type: 3}

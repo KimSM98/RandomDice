@@ -6,11 +6,15 @@ public class Dice : MonoBehaviour
 {
     public DiceEye diceEyePrefab;
 
+    #region DiceStatus
+    // 다이스가 배치된 보드 위치
+    BoardInfo boardInfo;
     private DiceType diceType;
     private SpriteRenderer spriteRenderer;
     private float attackPower;
     private float attackSpeed;
-    private Color diceEyeColor;
+    private Color diceEyeColor; 
+    #endregion
 
     private List<DiceEye> diceEyes;
 
@@ -20,11 +24,7 @@ public class Dice : MonoBehaviour
     private float moveSpeed = 5f;
     private bool returnToInitPos;
 
-    // 다이스가 배치된 보드 위치
-    BoardInfo boardInfo;
-
     private bool selected;
-    private bool tryMerge;
 
     private Dice coll;
     private bool canMerge;
@@ -39,8 +39,6 @@ public class Dice : MonoBehaviour
     {
         returnToInitPos = false;
         selected = false;
-
-        tryMerge = false;
         canMerge = false;
     }
 
@@ -55,6 +53,7 @@ public class Dice : MonoBehaviour
         }
     }
 
+    #region Collision
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!selected) return;
@@ -65,7 +64,28 @@ public class Dice : MonoBehaviour
             DiceCollision(collDice);
     }
 
+    private void DiceCollision(Dice collDice)
+    {
+        coll = null;
+
+        string collDiceType = collDice.GetDiceTypeName();
+        if (diceType.typeName == collDiceType && diceEyes.Count == collDice.diceEyes.Count)
+        {
+            canMerge = true;
+            coll = collDice;
+        }
+    } 
+    #endregion
+
+    #region Initialization
     public void InitDice(DiceType _type)
+    {
+        InitDiceByType(_type);
+
+        // Dice Eye 생성
+        CreateDiceEye();
+    }
+    private void InitDiceByType(DiceType _type)
     {
         diceType = _type;
         //attackPower = _type.attackPower;
@@ -73,34 +93,18 @@ public class Dice : MonoBehaviour
         //spriteRenderer.sprite = _type.sprite;
         //diceEyeColor = _type.diceEyeColor;
         spriteRenderer.sprite = diceType.sprite;
+    } 
 
-        // Dice Eye 생성
-        CreateDiceEye();
-    }
-
-    public void CreateDiceEye()
+    private void InitDiceEyeColor()
     {
-        if (diceEyes.Count >= 6) return;
-
-        DiceEye diceEye = Instantiate(diceEyePrefab, transform);
-        diceEye.GetComponent<SpriteRenderer>().color = diceType.diceEyeColor;
-        diceEyes.Add(diceEye);
-
-        ArrangeDiceEyePostion();
+        foreach(var diceEye in diceEyes)
+        {
+            diceEye.GetComponent<SpriteRenderer>().color = diceType.diceEyeColor;
+        }
     }
+    #endregion
 
-    public bool Merge()
-    {
-        if (!canMerge) return false;
-        coll.CreateDiceEye();
-
-        Destroy(this.gameObject);
-        tryMerge = false;
-
-        return true;
-    }
-
-    // Setter / Getter
+    #region Setter/Getter
     public void SetBoardInfo(BoardInfo bi)
     {
         boardInfo = bi;
@@ -116,11 +120,7 @@ public class Dice : MonoBehaviour
         selected = val;
     }
 
-    public void SetTryMerge(bool val)
-    {
-        tryMerge = val;
-    }
-
+    // Getter
     public BoardInfo GetBoardInfo()
     {
         return boardInfo;
@@ -128,6 +128,34 @@ public class Dice : MonoBehaviour
     public string GetDiceTypeName()
     {
         return diceType.typeName;
+    } 
+    #endregion
+
+    public void CreateDiceEye()
+    {
+        if (diceEyes.Count >= 6) return;
+
+        DiceEye diceEye = Instantiate(diceEyePrefab, transform);
+        diceEye.GetComponent<SpriteRenderer>().color = diceType.diceEyeColor;
+        diceEyes.Add(diceEye);
+
+        ArrangeDiceEyePostion();
+    }
+
+    // 같은 타입, 눈의 개수를 가진 주사위와 Merge한다.
+    public bool Merge(DiceType randType)
+    {
+        if (!canMerge) return false;
+        if (diceEyes.Count == 6) return false;
+
+        // 랜덤 타입으로 변화
+        coll.InitDiceByType(randType);
+        coll.InitDiceEyeColor();
+        coll.CreateDiceEye();
+
+        Destroy(this.gameObject);
+
+        return true;
     }
 
     private void ArrangeDiceEyePostion()
@@ -166,21 +194,5 @@ public class Dice : MonoBehaviour
         }
 
         return false;
-    }
-
-    private void DiceCollision(Dice collDice)
-    {
-        string collDiceType = collDice.GetDiceTypeName();
-        if (diceType.typeName == collDiceType && diceEyes.Count == collDice.diceEyes.Count)
-        {
-            canMerge = true;
-            coll = collDice;
-
-            if(tryMerge)
-            {
-                collDice.Merge();
-                this.gameObject.SetActive(false);
-            }
-        }
     }
 }

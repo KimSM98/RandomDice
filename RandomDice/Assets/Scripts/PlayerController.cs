@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private DiceManager diceManager;
+    private DiceSpawner diceSpawner;
 
     private Vector2 mouseWorldPos;
 
@@ -13,7 +14,8 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        diceManager = GetComponentInChildren<DiceManager>();    
+        diceManager = GetComponentInChildren<DiceManager>();
+        diceSpawner = GetComponentInChildren<DiceSpawner>();
     }
 
     void Update()
@@ -63,7 +65,8 @@ public class PlayerController : MonoBehaviour
     {
         if (!selectedDice) return;
 
-        if(selectedDice.Merge())
+        DiceType randType = diceSpawner.GetRandDiceType();
+        if (selectedDice.Merge(randType))
         {
             diceManager.RemoveActiveDice(selectedDice);
         }

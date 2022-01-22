@@ -41,6 +41,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 1324927599
+    locked: 0
+  - name: Object
+    uniqueID: 3856708201
+    locked: 0
+  - name: Dice
+    uniqueID: 1865996527
+    locked: 0
   - name: DiceEye
     uniqueID: 4159739867
     locked: 0

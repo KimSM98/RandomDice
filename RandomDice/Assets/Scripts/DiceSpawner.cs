@@ -14,12 +14,18 @@ public class DiceSpawner : MonoBehaviour
         Dice dice = Instantiate(dicePrefab, boardInfo.boardPos, Quaternion.identity);
 
         dice.SetBoardInfo(boardInfo);
-        
+
         // Random types
-        int randNum = Random.Range(0, diceTypes.Length);
-        dice.InitDice(diceTypes[randNum]);
+        DiceType diceType = GetRandDiceType();
+        dice.InitDice(diceType);
 
         return dice;
+    }
+
+    public DiceType GetRandDiceType()
+    {
+        int randNum = Random.Range(0, diceTypes.Length);
+        return diceTypes[randNum];
     }
 
 }
