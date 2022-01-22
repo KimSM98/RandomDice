@@ -8,25 +8,16 @@ public class DiceSpawner : MonoBehaviour
     public DiceType[] diceTypes;
     public SpawnPosition spawnPos;
 
-    private int numOfDice;
-
-    private void Start()
-    {
-        numOfDice = 0;
-    }
-
     public Dice SpawnDice()
     {
-        // Random Position
-        Vector2 randPos = spawnPos.GetRandomEmptyPos();
-        
-        Dice dice = Instantiate(dicePrefab, randPos, Quaternion.identity);
+        BoardInfo boardInfo = spawnPos.GetRandomBoard();
+        Dice dice = Instantiate(dicePrefab, boardInfo.boardPos, Quaternion.identity);
 
+        dice.SetBoardInfo(boardInfo);
+        
         // Random types
         int randNum = Random.Range(0, diceTypes.Length);
         dice.InitDice(diceTypes[randNum]);
-
-        numOfDice++;
 
         return dice;
     }

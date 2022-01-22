@@ -7,19 +7,27 @@ public class SpawnPosition : MonoBehaviour
     public float xOffset;
     public float yOffset;
 
-    private List<Vector2> emptyPos;
-    private List<Vector2> activePos;
+    [SerializeField]
+    private List<BoardInfo> emptyBoard;
+    [SerializeField]
+    private List<BoardInfo> activeBoard;
 
     bool afterStart = false; // for Gizmos
 
     void Start()
     {
-        emptyPos = new List<Vector2>();
-        activePos = new List<Vector2>();
+        emptyBoard = new List<BoardInfo>();
+        activeBoard = new List<BoardInfo>();
 
         InitSpawnPosition();
 
         afterStart = true;
+    }
+
+    public void MoveToEmptyBoard(BoardInfo boardInfo)
+    {
+        emptyBoard.Add(boardInfo);
+        activeBoard.Remove(boardInfo);
     }
 
     private void InitSpawnPosition()
@@ -30,19 +38,22 @@ public class SpawnPosition : MonoBehaviour
             for (int j = 0; j < 5; j++)
             {
                 Vector2 pos = new Vector2(startPos.x + xOffset * j, startPos.y - yOffset * i);
-                emptyPos.Add(pos);
+
+                BoardInfo bi = new BoardInfo(i, pos);
+                emptyBoard.Add(bi);
             }
         }
     }
 
-    public Vector2 GetRandomEmptyPos()
+    public BoardInfo GetRandomBoard()
     {
-        int randNum = Random.Range(0, emptyPos.Count);
-        Vector2 pos = emptyPos[randNum];
-        emptyPos.RemoveAt(randNum);
-        activePos.Add(pos);
+        int randNum = Random.Range(0, emptyBoard.Count);
+        BoardInfo boardInfo = emptyBoard[randNum];
+      
+        emptyBoard.RemoveAt(randNum);
+        activeBoard.Add(boardInfo);
 
-        return pos;
+        return boardInfo;
     }
 
     private void OnDrawGizmos()
@@ -55,15 +66,15 @@ public class SpawnPosition : MonoBehaviour
         if (!afterStart) return;
 
         Gizmos.color = Color.green;
-        foreach (Vector2 pos in emptyPos)
+        foreach (BoardInfo bi in emptyBoard)
         {
-            Gizmos.DrawCube(pos, size);
+            Gizmos.DrawCube(bi.boardPos, size);
         }
 
         Gizmos.color = Color.magenta;
-        foreach (Vector2 pos in activePos)
+        foreach (BoardInfo bi in activeBoard)
         {
-            Gizmos.DrawCube(pos, size);
+            Gizmos.DrawCube(bi.boardPos, size);
         }
     }
 }

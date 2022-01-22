@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7942837303731641281}
   - component: {fileID: 7942837303731641280}
   - component: {fileID: 4371004336128772185}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: DiceEye
   m_TagString: Untagged
   m_Icon: {fileID: 0}

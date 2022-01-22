@@ -4,24 +4,38 @@ using UnityEngine;
 
 public class DiceManager : MonoBehaviour
 {
-    public List<Dice> activeDice;
+    public List<Dice> activeDices;
 
     private DiceSpawner diceSpawner;
+    private SpawnPosition spawnPos;
 
     private void Start()
     {
         diceSpawner = GetComponent<DiceSpawner>();
+        spawnPos = diceSpawner.spawnPos;
     }
 
     public void SpawnDice()
     {
-        if(activeDice.Count >= 15)
+        if(activeDices.Count >= 15)
         {
             Debug.Log("소환 가능한 다이스의 최대 개수에 도달했습니다.");
             return;
         }
 
         Dice dice = diceSpawner.SpawnDice();
-        activeDice.Add(dice);
+        activeDices.Add(dice);
+    }
+
+    public List<Dice> GetDiceList()
+    {
+        return activeDices;
+    }
+
+    public void RemoveActiveDice(Dice dice)
+    {
+        spawnPos.MoveToEmptyBoard(dice.GetBoardInfo());
+
+        activeDices.Remove(dice);
     }
 }
