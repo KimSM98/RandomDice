@@ -758,9 +758,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e1e53474e5aa8f4780be54fdbfe892a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsterPrefabs:
-  - {fileID: 7720729129707872830, guid: e5a42aca8852fa442934293b1500a4bc, type: 3}
-  spawnDelay: 0
+  spawnDelay: 1
 --- !u!114 &841467596
 MonoBehaviour:
   m_ObjectHideFlags: 0

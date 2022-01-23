@@ -18,19 +18,30 @@ public class EnemyManager : MonoBehaviour
         enemySpawner = GetComponent<EnemySpawner>();
         initEnemyRoad();
 
-        SpawnEnemy();
+        StartCoroutine(EnemySpawning());
     }
 
+    #region Initialization
     private void initEnemyRoad()
     {
         enemyRoad = GetComponent<EnemyRoad>();
         startRoad = enemyRoad.GetRoad(0);
         endRoad = enemyRoad.GetRoad(3);
-    }
+    } 
+    #endregion
 
+    IEnumerator EnemySpawning()
+    {
+        while(true)
+        {
+            yield return new WaitForSeconds(spawnDelay);
+            SpawnEnemy();
+        }
+    }
     private void SpawnEnemy()
     {
         int typeNum = Random.Range(0, 3);
         enemySpawner.SpawnEnemy((EMonsterType)typeNum, startRoad);
     }
+
 }

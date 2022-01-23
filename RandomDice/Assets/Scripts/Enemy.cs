@@ -15,19 +15,33 @@ public class Enemy : MonoBehaviour
     public Road currentRoad;
     private float t = 0f;
 
+    private EnemySpawner spawner;
+
     private void Update()
     {
         MoveToNextRoad();
     }
 
     #region Initialization
-    public void Init(MonsterStatus status, MonsterType type)
+    public void Init(MonsterStatus status, MonsterType type, Vector2 spawnPos)
     {
         InitStatus(status);
         InitType(type);
+        InitPos(spawnPos);
 
         InitCanvas();
         InitHpText();
+    }
+
+    private void InitPos(Vector2 spawnPos)
+    {
+        transform.position = spawnPos;
+    }
+
+    // 최초로 생성될 때만
+    public void InitSpawner(EnemySpawner enemySpawner)
+    {
+        spawner = enemySpawner;
     }
 
     private void InitType(MonsterType type)
@@ -70,7 +84,12 @@ public class Enemy : MonoBehaviour
     public void MoveToNextRoad()
     {
         Road nextRoad = currentRoad.GetNextRoad();
-        if (nextRoad == null) return;
+        if (nextRoad == null) // 끝에 도달 또는 Road가 세팅되지 않음
+        {
+            spawner.MoveToPendingList(this);
+            gameObject.SetActive(false);
+            return;
+        }
 
         Vector2 nextPos = currentRoad.GetNextRoad().transform.position;
 
