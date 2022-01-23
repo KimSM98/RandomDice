@@ -12,9 +12,13 @@ public class EnemySpawner : MonoBehaviour
     private List<Enemy> pendingEnemies;
     private List<Enemy> activeEnemies;
 
+
+    private EnemyManager enemyManager;
+
     private void Start()
     {
         InitEnemyLists();
+        enemyManager = GetComponent<EnemyManager>();
     }
 
     public Enemy SpawnEnemy(EMonsterType monsterType, Road startRoad)
@@ -75,7 +79,7 @@ public class EnemySpawner : MonoBehaviour
         pendingEnemies.Add(enemy);
         activeEnemies.Remove(enemy);
 
-        GetComponent<EnemyManager>().RemoveFromEnemyList(enemy);
+        enemyManager.RemoveFromEnemyList(enemy);
     }
 
 }

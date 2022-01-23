@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour
 
     public float hp;
     public float moveSpeed;
-    public float attackPower; // Player HP에 영향
+    public int attackPower; // Player HP에 영향
     
     public Road currentRoad;
     private Road nextRoad;
@@ -20,6 +20,8 @@ public class Enemy : MonoBehaviour
     private float t;
 
     private EnemySpawner spawner;
+    private GameData gameData;
+
     [SerializeField]
     private bool isDead;
     private Vector2 deadPos;
@@ -95,6 +97,12 @@ public class Enemy : MonoBehaviour
     #endregion
 
     #region Setter/Getter
+    public void SetGameData(GameData data)
+    {
+        if (gameData != null) return;
+        gameData = data;
+    }
+
     public void SetCurrentRoad(Road road)
     {
         currentRoad = road;
@@ -129,6 +137,7 @@ public class Enemy : MonoBehaviour
         {
             //임시
             isDead = true;
+            gameData.TakeDamage(attackPower);
             InactivateEnemy();
             return;
         }
@@ -177,6 +186,8 @@ public class Enemy : MonoBehaviour
             isDead = true;
             deadPos = transform.position;
             InactivateEnemy();
+
+            gameData.AddSp(10);
         }
     }
 }

@@ -173,13 +173,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 029cdbe9c02c76340bc3867785075151, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normalMonsterStatus: {fileID: 0}
   canvas: {fileID: 7720729129959147700}
   hpText: {fileID: 7720729129232313382}
   hp: 0
   moveSpeed: 0
   attackPower: 0
   currentRoad: {fileID: 0}
+  t: 0
+  isDead: 0
 --- !u!1 &7720729129959147696
 GameObject:
   m_ObjectHideFlags: 0

@@ -18,13 +18,9 @@ public class Bullet : MonoBehaviour
     private Vector2 initPos;
     private float t;
 
-    //private Animator animator;
-    //private string explosionTrigger = "Explosion";
-
     private void Awake()
     {
         sprRenderer = GetComponent<SpriteRenderer>();
-        //animator = GetComponent<Animator>();
         bulletAnimation = GetComponent<BulletAnimation>();
     }
 

@@ -6,5 +6,5 @@ public class EnemyStatus : MonoBehaviour
 {
     public float hp;
     public float moveSpeed;
-    public float attackPower;
+    public int attackPower;
 }

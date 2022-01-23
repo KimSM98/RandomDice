@@ -11,5 +11,5 @@ public class MonsterType : ScriptableObject
 
     public float moveSpeedMult = 1f;
 
-    public float attackPowerMult = 1f;
+    public int attackPowerMult = 1;
 }
