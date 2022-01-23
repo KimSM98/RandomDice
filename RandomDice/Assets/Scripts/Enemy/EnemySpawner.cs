@@ -31,7 +31,8 @@ public class EnemySpawner : MonoBehaviour
         }
         activeEnemies.Add(enemy);
 
-        InitSpawnedEnemy(enemy, monsterType, startRoad, spawnPos);
+        enemy.Init(baseStatus, monsterTypes[(int)monsterType], spawnPos);
+        enemy.SetCurrentRoad(startRoad);
 
         return enemy;
     }
@@ -67,12 +68,6 @@ public class EnemySpawner : MonoBehaviour
             pendingEnemies.Add(enemy);
         }
     }
-
-    private void InitSpawnedEnemy(Enemy enemy, EMonsterType monsterType, Road startRoad, Vector2 spawnPos)
-    {
-        enemy.Init(baseStatus, monsterTypes[(int)monsterType], spawnPos);
-        enemy.SetCurrentRoad(startRoad);
-    } 
     #endregion
 
     public void MoveToPendingList(Enemy enemy)

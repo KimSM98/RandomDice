@@ -16,10 +16,13 @@ public class Enemy : MonoBehaviour
     private Road nextRoad;
     private float totalDistanceTraveled = 0f;
     private float distanceTraveled = 0f;
-
-    private float t = 0f;
+    [SerializeField]
+    private float t;
 
     private EnemySpawner spawner;
+    [SerializeField]
+    private bool isDead;
+    private Vector2 deadPos;
 
     private void Update()
     {
@@ -29,6 +32,10 @@ public class Enemy : MonoBehaviour
     #region Initialization
     public void Init(EnemyStatus status, MonsterType type, Vector2 spawnPos)
     {
+        hp = 0f;
+        t = 0f;
+        isDead = false;
+
         InitStatus(status);
         InitType(type);
         InitPos(spawnPos);
@@ -103,15 +110,26 @@ public class Enemy : MonoBehaviour
     {
         return hp;
     }
+
+    public Vector2 GetDeadPos()
+    {
+        return deadPos;
+    }
+
+    public bool IsDead()
+    {
+        return isDead;
+    }
     #endregion
 
+    #region Movement
     public void MoveToNextRoad()
     {
-        //Road nextRoad = currentRoad.GetNextRoad();
         if (nextRoad == null) // 끝에 도달 또는 Road가 세팅되지 않음
         {
-            spawner.MoveToPendingList(this);
-            gameObject.SetActive(false);
+            //임시
+            isDead = true;
+            InactivateEnemy();
             return;
         }
 
@@ -136,9 +154,29 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private void InactivateEnemy()
+    {
+        spawner.MoveToPendingList(this);
+        gameObject.SetActive(false);
+    }
+
     private void AddTotalDist()
     {
         totalDistanceTraveled += distanceTraveled;
         distanceTraveled = 0f;
+    } 
+    #endregion
+
+    public void TakeDamage(float damage)
+    {
+        hp -= damage;
+        //Debug.Log("m HP : " + hp);
+
+        if(hp <= 0)
+        {
+            isDead = true;
+            deadPos = transform.position;
+            InactivateEnemy();
+        }
     }
 }

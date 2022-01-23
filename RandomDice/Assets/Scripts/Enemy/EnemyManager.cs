@@ -59,6 +59,8 @@ public class EnemyManager : MonoBehaviour
 
     public Enemy GetRandomTarget()
     {
+        if (enemies.Count < 1) return null;
+
         int enemyNum = Random.Range(0, enemies.Count);
         return enemies[enemyNum];
     }

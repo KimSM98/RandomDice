@@ -15,7 +15,7 @@ public class DiceManager : MonoBehaviour
     {
         activeDices = new List<Dice>();
         diceSpawner = GetComponent<DiceSpawner>();
-        spawnPos = diceSpawner.spawnPos;
+        spawnPos = diceSpawner.diceSpawnPos;
 
         enemyManager = transform.parent.GetComponentInChildren<EnemyManager>();
     }

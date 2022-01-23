@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4919172190317226426}
   - component: {fileID: 4919172190317226425}
   m_Layer: 0
-  m_Name: SpawnPosition
+  m_Name: DiceSpawnPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 4919172190828298951}
   - component: {fileID: 4919172190828298952}
   m_Layer: 0
-  m_Name: board
+  m_Name: Board
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

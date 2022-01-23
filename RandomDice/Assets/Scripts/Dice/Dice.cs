@@ -11,9 +11,6 @@ public class Dice : MonoBehaviour
     BoardInfo boardInfo;
     private DiceType diceType;
     private SpriteRenderer spriteRenderer;
-    private float attackPower;
-    private float attackSpeed;
-    private Color diceEyeColor; 
     #endregion
 
     private List<DiceEye> diceEyes;
@@ -90,18 +87,14 @@ public class Dice : MonoBehaviour
     private void InitDiceByType(DiceType _type)
     {
         diceType = _type;
-        //attackPower = _type.attackPower;
-        //attackSpeed = _type.attackSpeed;
-        //spriteRenderer.sprite = _type.sprite;
-        //diceEyeColor = _type.diceEyeColor;
         spriteRenderer.sprite = diceType.sprite;
     } 
 
-    private void InitDiceEyeColor()
+    private void InitDiceEye()
     {
         foreach(var diceEye in diceEyes)
         {
-            diceEye.GetComponent<SpriteRenderer>().color = diceType.diceEyeColor;
+            diceEye.Init(diceType);
         }
     }
     #endregion
@@ -126,7 +119,6 @@ public class Dice : MonoBehaviour
     {
         if (target == enemy) 
         {
-            Debug.Log("같은 타겟 입니다.");
             return; 
         }
 
@@ -158,7 +150,8 @@ public class Dice : MonoBehaviour
         if (diceEyes.Count >= 6) return;
 
         DiceEye diceEye = Instantiate(diceEyePrefab, transform);
-        diceEye.GetComponent<SpriteRenderer>().color = diceType.diceEyeColor;
+        diceEye.Init(diceType);
+        //diceEye.GetComponent<SpriteRenderer>().color = diceType.diceEyeColor;
         diceEyes.Add(diceEye);
 
         ArrangeDiceEyePostion();
@@ -173,7 +166,7 @@ public class Dice : MonoBehaviour
 
         // 랜덤 타입으로 변화
         coll.InitDiceByType(randType);
-        coll.InitDiceEyeColor();
+        coll.InitDiceEye();
         coll.CreateDiceEye();
 
         Destroy(this.gameObject);

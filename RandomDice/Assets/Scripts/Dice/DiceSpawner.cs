@@ -6,11 +6,11 @@ public class DiceSpawner : MonoBehaviour
 {
     public Dice dicePrefab;
     public DiceType[] diceTypes;
-    public DiceSpawnPosition spawnPos;
+    public DiceSpawnPosition diceSpawnPos;
 
     public Dice SpawnDice()
     {
-        BoardInfo boardInfo = spawnPos.GetRandomBoard();
+        BoardInfo boardInfo = diceSpawnPos.GetRandomBoard();
         Dice dice = Instantiate(dicePrefab, boardInfo.boardPos, Quaternion.identity);
 
         dice.SetBoardInfo(boardInfo);
