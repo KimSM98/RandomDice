@@ -20,7 +20,6 @@ public class EnemyManager : MonoBehaviour
     [SerializeField]
     private Enemy mostHPEnemy;
 
-
     private void Start()
     {
         enemies = new List<Enemy>();

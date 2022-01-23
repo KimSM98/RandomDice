@@ -19,6 +19,8 @@ public class Dice : MonoBehaviour
     private List<DiceEye> diceEyes;
 
     // 타겟 필요
+    [SerializeField]
+    private Enemy target;
 
     [SerializeField]
     private float moveSpeed = 5f;
@@ -120,6 +122,21 @@ public class Dice : MonoBehaviour
         selected = val;
     }
 
+    public void SetTarget(Enemy enemy)
+    {
+        if (target == enemy) 
+        {
+            Debug.Log("같은 타겟 입니다.");
+            return; 
+        }
+
+        target = enemy;
+        foreach(DiceEye diceEye in diceEyes)
+        {
+            diceEye.SetTarget(target);
+        }
+    }
+
     // Getter
     public BoardInfo GetBoardInfo()
     {
@@ -129,6 +146,11 @@ public class Dice : MonoBehaviour
     {
         return diceType.typeName;
     } 
+
+    public DiceType.TargetType GetDiceTargetType()
+    {
+        return diceType.targetType;
+    }
     #endregion
 
     public void CreateDiceEye()

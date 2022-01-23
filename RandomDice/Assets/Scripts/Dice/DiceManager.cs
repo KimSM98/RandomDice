@@ -4,15 +4,27 @@ using UnityEngine;
 
 public class DiceManager : MonoBehaviour
 {
-    public List<Dice> activeDices;
+    private List<Dice> activeDices;
 
     private DiceSpawner diceSpawner;
     private DiceSpawnPosition spawnPos;
 
+    private EnemyManager enemyManager;
+
     private void Start()
     {
+        activeDices = new List<Dice>();
         diceSpawner = GetComponent<DiceSpawner>();
         spawnPos = diceSpawner.spawnPos;
+
+        enemyManager = transform.parent.GetComponentInChildren<EnemyManager>();
+    }
+
+    private void Update()
+    {
+        if (activeDices.Count < 1) return;
+
+        UpdateAttackTarget();
     }
 
     public void SpawnDice()
@@ -37,5 +49,33 @@ public class DiceManager : MonoBehaviour
         spawnPos.MoveToEmptyBoard(dice.GetBoardInfo());
 
         activeDices.Remove(dice);
+    }
+
+    private void UpdateAttackTarget()
+    {
+        foreach(Dice dice in activeDices)
+        {
+            DiceType.TargetType targetType = dice.GetDiceTargetType();
+
+            Enemy target = null;
+            switch (targetType)
+            {
+                case DiceType.TargetType.InFront:
+                    target = enemyManager.GetLeadingTarget();
+                    break;
+
+                case DiceType.TargetType.HPDescendingOrder:
+                    target = enemyManager.GetMostHPTarget();
+                    break;
+
+                case DiceType.TargetType.Random:
+                    target = enemyManager.GetRandomTarget();
+                    break;
+            }
+
+            if (target == null) return;
+
+            dice.SetTarget(target);
+        }
     }
 }
