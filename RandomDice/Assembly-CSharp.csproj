@@ -71,14 +71,14 @@
     <Compile Include="Assets\Scripts\Dice\DiceManager.cs" />
     <Compile Include="Assets\Scripts\Dice\DiceSpawnPosition.cs" />
     <Compile Include="Assets\Scripts\Dice\DiceSpawner.cs" />
-    <Compile Include="Assets\Scripts\Enemy.cs" />
-    <Compile Include="Assets\Scripts\EnemyManager.cs" />
-    <Compile Include="Assets\Scripts\EnemyRoad.cs" />
-    <Compile Include="Assets\Scripts\EnemySpawner.cs" />
-    <Compile Include="Assets\Scripts\MonsterTypeEnum.cs" />
-    <Compile Include="Assets\Scripts\Road.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Enemy.cs" />
+    <Compile Include="Assets\Scripts\Enemy\EnemyManager.cs" />
+    <Compile Include="Assets\Scripts\Enemy\EnemyRoad.cs" />
+    <Compile Include="Assets\Scripts\Enemy\EnemySpawner.cs" />
+    <Compile Include="Assets\Scripts\Enemy\EnemyStatus.cs" />
+    <Compile Include="Assets\Scripts\Enemy\MonsterTypeEnum.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Road.cs" />
     <Compile Include="Assets\Scripts\ScriptableObjects\DiceType\DiceType.cs" />
-    <Compile Include="Assets\Scripts\ScriptableObjects\Monster\Status\MonsterStatus.cs" />
     <Compile Include="Assets\Scripts\ScriptableObjects\Monster\Type\MonsterType.cs" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.9f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>

@@ -758,6 +758,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e1e53474e5aa8f4780be54fdbfe892a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseStatus: {fileID: 2112655934893425786, guid: 4967e7474c2ebae46ac16ab857cb9eee,
+    type: 3}
   spawnDelay: 1
 --- !u!114 &841467596
 MonoBehaviour:
@@ -773,11 +775,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 6373812405555608833, guid: fb60831e3a0b87249a875e3dc7c62a49,
     type: 3}
-  baseStatus: {fileID: 11400000, guid: acc7a763d65d54d4e9c640067d7ccce5, type: 2}
+  baseStatus: {fileID: 2112655934893425786, guid: 4967e7474c2ebae46ac16ab857cb9eee,
+    type: 3}
   monsterTypes:
   - {fileID: 11400000, guid: 1ab4d8a755a432642b7da3e36fd40dde, type: 2}
   - {fileID: 11400000, guid: eb7567cc3c6ef8844b140206b34c2e44, type: 2}
   - {fileID: 11400000, guid: 166c206aa68dab94ea145bec7b7d1ef7, type: 2}
+  pendingEnemies: []
+  activeEnemies: []
 --- !u!1 &1100933212
 GameObject:
   m_ObjectHideFlags: 0
