@@ -75,10 +75,11 @@
     <Compile Include="Assets\Scripts\EnemyManager.cs" />
     <Compile Include="Assets\Scripts\EnemyRoad.cs" />
     <Compile Include="Assets\Scripts\EnemySpawner.cs" />
-    <Compile Include="Assets\Scripts\NormalMonster.cs" />
+    <Compile Include="Assets\Scripts\MonsterTypeEnum.cs" />
     <Compile Include="Assets\Scripts\Road.cs" />
     <Compile Include="Assets\Scripts\ScriptableObjects\DiceType\DiceType.cs" />
-    <Compile Include="Assets\Scripts\ScriptableObjects\MonsterStatus\MonsterStatus.cs" />
+    <Compile Include="Assets\Scripts\ScriptableObjects\Monster\Status\MonsterStatus.cs" />
+    <Compile Include="Assets\Scripts\ScriptableObjects\Monster\Type\MonsterType.cs" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.9f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>

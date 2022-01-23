@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
-    public MonsterStatus normalMonsterStatus;
     public Canvas canvas;
     public Text hpText;
 
@@ -22,6 +21,35 @@ public class Enemy : MonoBehaviour
     }
 
     #region Initialization
+    public void Init(MonsterStatus status, MonsterType type)
+    {
+        InitStatus(status);
+        InitType(type);
+
+        InitCanvas();
+        InitHpText();
+    }
+
+    private void InitType(MonsterType type)
+    {
+        InitSprite(type.sprite);
+        hp *= type.HpMult;
+        moveSpeed *= type.moveSpeedMult;
+        attackPower *= type.attackPowerMult;
+    }
+
+    private void InitSprite(Sprite spr)
+    {
+        GetComponent<SpriteRenderer>().sprite = spr;
+    }
+
+    private void InitStatus(MonsterStatus status)
+    {
+        hp = status.hp;
+        moveSpeed = status.moveSpeed;
+        attackPower = status.attackPower;
+    }
+
     public void InitCanvas()
     {
         RectTransform canvasTransform = canvas.GetComponent<RectTransform>();

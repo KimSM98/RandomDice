@@ -758,8 +758,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e1e53474e5aa8f4780be54fdbfe892a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normalMonsterPrefab: {fileID: 7720729129707872830, guid: e5a42aca8852fa442934293b1500a4bc,
-    type: 3}
+  monsterPrefabs:
+  - {fileID: 7720729129707872830, guid: e5a42aca8852fa442934293b1500a4bc, type: 3}
+  spawnDelay: 0
 --- !u!114 &841467596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -772,6 +773,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bda93f0cfc5c1744bb30a4f6c975fec7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyPrefab: {fileID: 6373812405555608833, guid: fb60831e3a0b87249a875e3dc7c62a49,
+    type: 3}
+  baseStatus: {fileID: 11400000, guid: acc7a763d65d54d4e9c640067d7ccce5, type: 2}
+  monsterTypes:
+  - {fileID: 11400000, guid: 1ab4d8a755a432642b7da3e36fd40dde, type: 2}
+  - {fileID: 11400000, guid: eb7567cc3c6ef8844b140206b34c2e44, type: 2}
+  - {fileID: 11400000, guid: 166c206aa68dab94ea145bec7b7d1ef7, type: 2}
 --- !u!1 &1100933212
 GameObject:
   m_ObjectHideFlags: 0
