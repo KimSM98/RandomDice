@@ -61,6 +61,7 @@ public class Bullet : MonoBehaviour
         
         if (t >= 1f || target.IsDead())
         {
+            t = 0f;
             isShooting = false;
 
             PlayExplosionAnim();

@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class DiceManager : MonoBehaviour
 {
-    private List<Dice> activeDices;
-
+    #region Components
     private DiceSpawner diceSpawner;
     private DiceSpawnPosition spawnPos;
-
     private EnemyManager enemyManager;
+    private PlayerStatus playerStatus;
+    #endregion
+
+    private List<Dice> activeDices;
 
     private void Start()
     {
@@ -18,6 +20,7 @@ public class DiceManager : MonoBehaviour
         spawnPos = diceSpawner.diceSpawnPos;
 
         enemyManager = transform.parent.GetComponentInChildren<EnemyManager>();
+        playerStatus = GetComponentInParent<PlayerStatus>();
     }
 
     private void Update()
@@ -29,6 +32,7 @@ public class DiceManager : MonoBehaviour
 
     public void SpawnDice()
     {
+        if (!playerStatus.CanSpawnDice()) return;
         if(activeDices.Count >= 15)
         {
             Debug.Log("소환 가능한 다이스의 최대 개수에 도달했습니다.");
@@ -37,6 +41,8 @@ public class DiceManager : MonoBehaviour
 
         Dice dice = diceSpawner.SpawnDice();
         activeDices.Add(dice);
+
+        playerStatus.SpawnDice();
     }
 
     public List<Dice> GetDiceList()

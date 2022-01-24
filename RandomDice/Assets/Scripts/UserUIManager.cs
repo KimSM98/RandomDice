@@ -5,26 +5,39 @@ using UnityEngine.UI;
 
 public class UserUIManager : MonoBehaviour
 {
-    public Text spText;
+    public Text currentSPText;
+    public Text spawnDiceSPText;
     public LifeUI[] lifes;
-    
-    public void Inin(int sp)
+
+    private int currentLife;
+
+    private void Start()
     {
-        SetSPText(sp);        
+        currentLife = lifes.Length - 1;
     }
 
-    public void SetSPText(int sp)
+    public void Inin(int sp, int spawnDiceSP)
     {
-        spText.text = sp.ToString();
+        UpdateCurrentSPText(sp);
+        UpdateSpawnDiceSP(spawnDiceSP);
     }
 
-    public void OffLifeUI(int currentHP) // -2가 들어올 수도 있음
+    public void UpdateCurrentSPText(int sp)
     {
-        for(int i = lifes.Length - 1; i >= currentHP; i--)
-        {
-            if (lifes[i].TurnedOff()) continue;
-            lifes[currentHP].OffLifeUI();
-        }
+        currentSPText.text = sp.ToString();
+    }
+    public void UpdateSpawnDiceSP(int val)
+    {
+        spawnDiceSPText.text = val.ToString();
     }
 
+    public void OffLifeUI() // -2가 들어올 수도 있음, 3에서 1이 될 때
+    {
+        //currentLife--;
+
+        if (currentLife < 0) return;
+
+        lifes[currentLife].OffLifeUI();
+        currentLife--;
+    }
 }

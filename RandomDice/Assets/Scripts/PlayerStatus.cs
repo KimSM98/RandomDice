@@ -7,17 +7,45 @@ public class PlayerStatus : MonoBehaviour
     [SerializeField]
     protected int sp = 100;
     [SerializeField]
-    protected int hp = 3;
+    protected int spawnDiceSP = 10;
+    [SerializeField]
+    protected int life = 3;
+
+    private bool isDead = false;
+
+    //private void Awake()
+    //{
+    //    Debug.Log("Status 추가");
+    //    //GameManager.instance.AddPlayerStatus(this);
+    //}
 
     public virtual void AddSp(int val)
     {
         sp += val;
-        Debug.Log("SP " + sp);
     }
 
     public virtual void TakeDamage(int damage)
     {
-        hp = Mathf.Max(0, hp -= damage);
-        // IF hp <= 0
+        life = Mathf.Max(0, life -= damage);
+
+        if (life == 0) isDead = true;
+    }
+
+    public virtual void SpawnDice()
+    {
+        sp -= spawnDiceSP;
+        spawnDiceSP += 10;
+    }
+
+    public bool CanSpawnDice()
+    {
+        if (sp - spawnDiceSP >= 0) return true;
+
+        return false;
+    }
+
+    public bool isPlayerDead()
+    {
+        return isDead;
     }
 }

@@ -17,13 +17,16 @@ public class EnemyManager : MonoBehaviour
     #endregion
 
     private List<Enemy> enemies;
-    [SerializeField]
     private Enemy leadingEnemy;
-    [SerializeField]
     private Enemy mostHPEnemy;
+
+    private bool spawnPause;
+
 
     private void Start()
     {
+        spawnPause = false;
+
         enemies = new List<Enemy>();
         enemySpawner = GetComponent<EnemySpawner>();
         playerStatus = GetComponentInParent<PlayerStatus>();
@@ -50,6 +53,11 @@ public class EnemyManager : MonoBehaviour
     #endregion
 
     #region Setter/Getter
+    public void SetSpawnPause(bool val)
+    {
+        spawnPause = val;
+    }
+
     public Enemy GetLeadingTarget()
     {
         return leadingEnemy;
@@ -108,11 +116,17 @@ public class EnemyManager : MonoBehaviour
     #region SpawnEnemy
     IEnumerator EnemySpawning()
     {
-        while (true)
+        while (spawnPause != false)
         {
+            // 여기가 문제
+            //if (spawnPause == false) continue;
+
             yield return new WaitForSeconds(spawnDelay);
             SpawnEnemy();
         }
+        Debug.Log("EnemySpawn끝");
+
+
     }
 
     private void SpawnEnemy()

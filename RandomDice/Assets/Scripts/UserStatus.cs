@@ -10,18 +10,26 @@ public class UserStatus : PlayerStatus
     {
         userUI = GetComponent<UserUIManager>();
 
-        userUI.Inin(sp);
+        userUI.Inin(sp, spawnDiceSP);
     }
 
     public override void AddSp(int val)
     {
         base.AddSp(val);
-        userUI.SetSPText(sp);
+        userUI.UpdateCurrentSPText(sp);
     }
 
     public override void TakeDamage(int damage)
     {
         base.TakeDamage(damage);
-        userUI.OffLifeUI(hp);
+        for(int i = 0; i < damage; i++)
+            userUI.OffLifeUI();
+    }
+
+    public override void SpawnDice()
+    {
+        base.SpawnDice();
+        userUI.UpdateCurrentSPText(sp);
+        userUI.UpdateSpawnDiceSP(spawnDiceSP);
     }
 }
