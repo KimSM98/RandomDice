@@ -2,14 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Bullet 생성
-
 public class DiceEye : MonoBehaviour
 {
     private Enemy target;
     private DiceType type;
 
+    #region Components
     private BulletManager bulletManager;
+    private SpriteRenderer spriteRenderer;
+    #endregion
+
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
     private void Start()
     {
         bulletManager = GameManager.instance.GetBulletManager();
@@ -36,7 +42,7 @@ public class DiceEye : MonoBehaviour
 
     private void SetColor(Color color)
     {
-        GetComponent<SpriteRenderer>().color = color;
+        spriteRenderer.color = color;
     }
 
     public void SetTarget(Enemy enemy)

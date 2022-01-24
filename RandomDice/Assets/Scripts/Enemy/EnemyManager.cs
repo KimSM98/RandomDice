@@ -8,12 +8,13 @@ public class EnemyManager : MonoBehaviour
     public EnemyStatus baseStatus;
     public float spawnDelay = 1f;
 
+    #region Components
     private EnemyRoad enemyRoad;
     private Road startRoad;
     private Road endRoad;
-
     private EnemySpawner enemySpawner;
-    private GameData gameData;
+    private PlayerStatus playerStatus;
+    #endregion
 
     private List<Enemy> enemies;
     [SerializeField]
@@ -25,7 +26,7 @@ public class EnemyManager : MonoBehaviour
     {
         enemies = new List<Enemy>();
         enemySpawner = GetComponent<EnemySpawner>();
-        gameData = GetComponentInParent<GameData>();
+        playerStatus = GetComponentInParent<PlayerStatus>();
         initEnemyRoad();
 
         StartCoroutine(EnemySpawning());
@@ -98,8 +99,9 @@ public class EnemyManager : MonoBehaviour
     } 
     #endregion
 
-    public void RemoveFromEnemyList(Enemy enemy)
+    public void RemoveFromEnemies(Enemy enemy)
     {
+        enemySpawner.MoveToPendingList(enemy);
         enemies.Remove(enemy);
     }
 
@@ -117,7 +119,8 @@ public class EnemyManager : MonoBehaviour
     {
         int typeNum = Random.Range(0, 3);
         Enemy enemy = enemySpawner.SpawnEnemy((EMonsterType)typeNum, startRoad);
-        enemy.SetGameData(gameData);
+        enemy.SetEnemyManager(this);
+        enemy.SetPlayerStatus(playerStatus);
 
         enemies.Add(enemy);
     } 

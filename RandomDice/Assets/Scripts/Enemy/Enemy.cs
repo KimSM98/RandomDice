@@ -19,8 +19,10 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private float t;
 
-    private EnemySpawner spawner;
-    private GameData gameData;
+    #region Components
+    private EnemyManager enemyManager;
+    private PlayerStatus playerStatus; 
+    #endregion
 
     [SerializeField]
     private bool isDead;
@@ -50,12 +52,6 @@ public class Enemy : MonoBehaviour
     private void InitPos(Vector2 spawnPos)
     {
         transform.position = spawnPos;
-    }
-
-    // 최초로 생성될 때만
-    public void InitSpawner(EnemySpawner enemySpawner)
-    {
-        spawner = enemySpawner;
     }
 
     private void InitType(MonsterType type)
@@ -97,10 +93,16 @@ public class Enemy : MonoBehaviour
     #endregion
 
     #region Setter/Getter
-    public void SetGameData(GameData data)
+    public void SetEnemyManager(EnemyManager manager)
     {
-        if (gameData != null) return;
-        gameData = data;
+        if (enemyManager != null) return;
+        enemyManager = manager;
+    }
+
+    public void SetPlayerStatus(PlayerStatus status)
+    {
+        if (playerStatus != null) return;
+        playerStatus = status;
     }
 
     public void SetCurrentRoad(Road road)
@@ -137,7 +139,8 @@ public class Enemy : MonoBehaviour
         {
             //임시
             isDead = true;
-            gameData.TakeDamage(attackPower);
+            //gameData.TakeDamage(attackPower);
+            playerStatus.TakeDamage(attackPower);
             InactivateEnemy();
             return;
         }
@@ -165,7 +168,7 @@ public class Enemy : MonoBehaviour
 
     private void InactivateEnemy()
     {
-        spawner.MoveToPendingList(this);
+        enemyManager.RemoveFromEnemies(this);
         gameObject.SetActive(false);
     }
 
@@ -187,7 +190,7 @@ public class Enemy : MonoBehaviour
             deadPos = transform.position;
             InactivateEnemy();
 
-            gameData.AddSp(10);
+            playerStatus.AddSp(10);
         }
     }
 }

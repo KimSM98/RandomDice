@@ -12,51 +12,9 @@ public class EnemySpawner : MonoBehaviour
     private List<Enemy> pendingEnemies;
     private List<Enemy> activeEnemies;
 
-
-    private EnemyManager enemyManager;
-
     private void Start()
     {
         InitEnemyLists();
-        enemyManager = GetComponent<EnemyManager>();
-    }
-
-    public Enemy SpawnEnemy(EMonsterType monsterType, Road startRoad)
-    {
-        Vector2 spawnPos = startRoad.transform.position;
-        Enemy enemy;
-        if(pendingEnemies.Count > 0)
-        {
-            enemy = GetEnemyFromPending();
-        }
-        else
-        {
-            enemy = IntstantiateEnemy();
-        }
-        activeEnemies.Add(enemy);
-
-        enemy.Init(baseStatus, monsterTypes[(int)monsterType], spawnPos);
-        enemy.SetCurrentRoad(startRoad);
-
-        return enemy;
-    }
-
-    private Enemy GetEnemyFromPending()
-    {
-        int lastIdx = pendingEnemies.Count - 1;
-        Enemy lastEnemyInPending = pendingEnemies[lastIdx];
-        lastEnemyInPending.gameObject.SetActive(true);
-
-        pendingEnemies.RemoveAt(lastIdx);
-
-        return lastEnemyInPending;
-    }
-    
-    private Enemy IntstantiateEnemy()
-    {
-        Enemy enemy = Instantiate(enemyPrefab);
-        enemy.InitSpawner(this);
-        return enemy;
     }
 
     #region Initialization
@@ -74,12 +32,46 @@ public class EnemySpawner : MonoBehaviour
     }
     #endregion
 
+    public Enemy SpawnEnemy(EMonsterType monsterType, Road startRoad)
+    {
+        Vector2 spawnPos = startRoad.transform.position;
+        Enemy enemy;
+        if(pendingEnemies.Count > 0)
+        {
+            enemy = GetPendingEnemy();
+        }
+        else
+        {
+            enemy = IntstantiateEnemy();
+        }
+        activeEnemies.Add(enemy);
+
+        enemy.Init(baseStatus, monsterTypes[(int)monsterType], spawnPos);
+        enemy.SetCurrentRoad(startRoad);
+
+        return enemy;
+    }
+
+    private Enemy GetPendingEnemy()
+    {
+        int lastIdx = pendingEnemies.Count - 1;
+        Enemy lastEnemyInPendingList = pendingEnemies[lastIdx];
+        lastEnemyInPendingList.gameObject.SetActive(true);
+
+        pendingEnemies.RemoveAt(lastIdx);
+
+        return lastEnemyInPendingList;
+    }
+    
+    private Enemy IntstantiateEnemy()
+    {
+        Enemy enemy = Instantiate(enemyPrefab);
+        return enemy;
+    }
+
     public void MoveToPendingList(Enemy enemy)
     {
         pendingEnemies.Add(enemy);
         activeEnemies.Remove(enemy);
-
-        enemyManager.RemoveFromEnemyList(enemy);
     }
-
 }

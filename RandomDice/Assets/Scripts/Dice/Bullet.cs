@@ -61,28 +61,25 @@ public class Bullet : MonoBehaviour
         
         if (t >= 1f || target.IsDead())
         {
-            t = 0f;
-            //StartCoroutine(PlayExplosionAnim());
-            //PlayExplosionAnim();
+            isShooting = false;
 
-            ResetBullet();
+            PlayExplosionAnim();
+
             if (!target.IsDead())
                 target.TakeDamage(type.attackPower);
         }
     }
 
-    void PlayExplosionAnim()
+    private void PlayExplosionAnim()
     {
-        //Debug.Log("코루틴 시작");
-        StartCoroutine(bulletAnimation.PlayExplosionAnim());
-        //ResetBullet();
+        StartCoroutine(ExplosionAnim());
     }
-    //private IEnumerator PlayExplosionAnim()
-    //{
-    //    yield return StartCoroutine(bulletAnimation.PlayExplosionAnim());
-    //    Debug.Log("Play끝");
-    //    //ResetBullet();
-    //}
+
+    private IEnumerator ExplosionAnim()
+    {
+        yield return StartCoroutine(bulletAnimation.PlayExplosionAnim());
+        ResetBullet();
+    }
 
     public void ResetBullet()
     {

@@ -81,10 +81,13 @@
     <Compile Include="Assets\Scripts\Enemy\EnemyStatus.cs" />
     <Compile Include="Assets\Scripts\Enemy\MonsterTypeEnum.cs" />
     <Compile Include="Assets\Scripts\Enemy\Road.cs" />
-    <Compile Include="Assets\Scripts\GameData.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\LifeUI.cs" />
+    <Compile Include="Assets\Scripts\PlayerStatus.cs" />
     <Compile Include="Assets\Scripts\ScriptableObjects\DiceType\DiceType.cs" />
     <Compile Include="Assets\Scripts\ScriptableObjects\Monster\Type\MonsterType.cs" />
+    <Compile Include="Assets\Scripts\UserStatus.cs" />
+    <Compile Include="Assets\Scripts\UserUIManager.cs" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.9f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
