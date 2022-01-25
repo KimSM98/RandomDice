@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    #region Components
     private DiceManager diceManager;
-    private DiceSpawner diceSpawner;
+    private DiceSpawner diceSpawner; 
+    #endregion
 
     private Vector2 mouseWorldPos;
 
@@ -20,10 +22,10 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        MouseControl();
+        InputControl();
     }
 
-    private void MouseControl()
+    private void InputControl()
     {
         if(Input.GetMouseButtonDown(0))
         {
@@ -41,6 +43,11 @@ public class PlayerController : MonoBehaviour
         else if(Input.GetMouseButtonUp(0))
         {
             PutDice();
+        }
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
         }
     }   
 

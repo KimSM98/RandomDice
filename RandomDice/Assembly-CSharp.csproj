@@ -64,7 +64,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\BulletManager.cs" />
     <Compile Include="Assets\Scripts\Control\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Dice\BoardInfo.cs" />
     <Compile Include="Assets\Scripts\Dice\Bullet.cs" />
@@ -81,14 +80,15 @@
     <Compile Include="Assets\Scripts\Enemy\EnemyStatus.cs" />
     <Compile Include="Assets\Scripts\Enemy\MonsterTypeEnum.cs" />
     <Compile Include="Assets\Scripts\Enemy\Road.cs" />
-    <Compile Include="Assets\Scripts\GameManager.cs" />
-    <Compile Include="Assets\Scripts\LifeUI.cs" />
-    <Compile Include="Assets\Scripts\PlayerStatus.cs" />
-    <Compile Include="Assets\Scripts\ScreenResolution.cs" />
+    <Compile Include="Assets\Scripts\Managers\BulletManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\UserUIManager.cs" />
     <Compile Include="Assets\Scripts\ScriptableObjects\DiceType\DiceType.cs" />
     <Compile Include="Assets\Scripts\ScriptableObjects\Monster\Type\MonsterType.cs" />
-    <Compile Include="Assets\Scripts\UserStatus.cs" />
-    <Compile Include="Assets\Scripts\UserUIManager.cs" />
+    <Compile Include="Assets\Scripts\Statuses\PlayerStatus.cs" />
+    <Compile Include="Assets\Scripts\Statuses\UserStatus.cs" />
+    <Compile Include="Assets\Scripts\UI\LifeUI.cs" />
+    <Compile Include="Assets\Scripts\UI\ScreenResolution.cs" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.9f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>

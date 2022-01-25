@@ -8,16 +8,20 @@ public class Enemy : MonoBehaviour
     public Canvas canvas;
     public Text hpText;
 
+    #region Status var
     public float hp;
     public float moveSpeed;
-    public int attackPower; // Player HP에 영향
-    
+    public int attackPower; // Player HP에 영향 
+    #endregion
+
+    #region Movement var
     public Road currentRoad;
     private Road nextRoad;
     private float totalDistanceTraveled = 0f;
     private float distanceTraveled = 0f;
     [SerializeField]
-    private float t;
+    private float t; 
+    #endregion
 
     #region Components
     private EnemyManager enemyManager;

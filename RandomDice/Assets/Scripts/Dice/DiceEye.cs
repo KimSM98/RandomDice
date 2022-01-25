@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DiceEye : MonoBehaviour
 {
+    [SerializeField]
     private Enemy target;
     private DiceType type;
 

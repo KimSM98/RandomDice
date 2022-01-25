@@ -21,6 +21,7 @@ public class DiceManager : MonoBehaviour
 
         enemyManager = transform.parent.GetComponentInChildren<EnemyManager>();
         playerStatus = GetComponentInParent<PlayerStatus>();
+
     }
 
     private void Update()

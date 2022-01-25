@@ -5,7 +5,6 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     private DiceEye shootingDiceEye;
-    [SerializeField]
     private Enemy target;
     private DiceType type;
     [SerializeField]
@@ -35,6 +34,7 @@ public class Bullet : MonoBehaviour
     public void Init(Vector2 pos, Enemy _target, DiceType _type)
     {
         isShooting = true;
+        transform.position = pos;
         initPos = pos;
         t = 0f;
 
@@ -61,14 +61,19 @@ public class Bullet : MonoBehaviour
         
         if (t >= 1f || target.IsDead())
         {
-            t = 0f;
-            isShooting = false;
-
-            PlayExplosionAnim();
-
-            if (!target.IsDead())
-                target.TakeDamage(type.attackPower);
+            BulletExplosion();
         }
+    }
+
+    #region Explosion
+    private void BulletExplosion()
+    {
+        isShooting = false;
+        
+        if (!target.IsDead())
+            target.TakeDamage(type.attackPower);
+
+        PlayExplosionAnim();
     }
 
     private void PlayExplosionAnim()
@@ -80,9 +85,10 @@ public class Bullet : MonoBehaviour
     {
         yield return StartCoroutine(bulletAnimation.PlayExplosionAnim());
         ResetBullet();
-    }
+    } 
+    #endregion
 
-    public void ResetBullet()
+    private void ResetBullet()
     {
         GameManager.instance.GetBulletManager().MoveToPendingList(this);
         gameObject.SetActive(false);

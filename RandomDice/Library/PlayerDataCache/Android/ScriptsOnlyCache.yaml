@@ -129,13 +129,13 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 13678}
     - Class: 114
-      Script: {instanceID: 14290}
+      Script: {instanceID: 14126}
     - Class: 114
-      Script: {instanceID: 14326}
+      Script: {instanceID: 14292}
     - Class: 114
-      Script: {instanceID: 14348}
+      Script: {instanceID: 14328}
     - Class: 114
-      Script: {instanceID: 23212}
+      Script: {instanceID: 14350}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -241,7 +241,7 @@ ScriptsOnlyBuild:
     className: TouchInputModule
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: 6cbed2045991eff2af08142782f60105
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: GameManager
@@ -301,7 +301,7 @@ ScriptsOnlyBuild:
     className: SignalAsset
   - hash:
       serializedVersion: 2
-      Hash: 73b8ddec370d209c1c2956f025460d33
+      Hash: 9be288298d8e9a2144625b2d8b67dd35
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: UserStatus
@@ -469,7 +469,7 @@ ScriptsOnlyBuild:
     className: LifeUI
   - hash:
       serializedVersion: 2
-      Hash: c2b0df43b99501ea4521cb799925443a
+      Hash: cbed2f151d13b59dda27a6d8822b4a77
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: EnemyManager
@@ -481,7 +481,7 @@ ScriptsOnlyBuild:
     className: TMP_SpriteAnimator
   - hash:
       serializedVersion: 2
-      Hash: 13c8e7dcf105bf937bc23fa99f8884a7
+      Hash: 459b50185a167c1d210a783633c72823
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Bullet
@@ -668,6 +668,12 @@ ScriptsOnlyBuild:
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: ScreenResolution
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: UnityEngine.TestRunner.dll
     namespaceName: UnityEngine.TestTools.TestRunner.Callbacks
     className: PlayModeRunnerCallback
@@ -679,7 +685,7 @@ ScriptsOnlyBuild:
     className: BaseInput
   - hash:
       serializedVersion: 2
-      Hash: 73b8ddec370d209c1c2956f025460d33
+      Hash: 9be288298d8e9a2144625b2d8b67dd35
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerStatus
@@ -739,7 +745,7 @@ ScriptsOnlyBuild:
     className: SignalEmitter
   - hash:
       serializedVersion: 2
-      Hash: 76c8276d768aa28c6c0b9f11e62ec4a5
+      Hash: 2dc5c81b8930a9a045c5bd96b593c2d2
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: UserUIManager
@@ -751,7 +757,7 @@ ScriptsOnlyBuild:
     className: Slider
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: 024e41c6cfe4e1ceca93865f4d25a61d
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: DiceEye
@@ -767,13 +773,7 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
-  - hash:
-      serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: ScreenResolution
   platform: 13
   scenePathNames:
   - Assets/Scenes/GameScene.unity
-  playerPath: C:/Users/KSM/Desktop/Project/Unity/RandomDice/RandomDice/RandomDiceE.apk
+  playerPath: C:/Users/KSM/Desktop/Project/Unity/RandomDice/RandomDice/RandomDice.apk

@@ -6,7 +6,7 @@ public class Dice : MonoBehaviour
 {
     public DiceEye diceEyePrefab;
 
-    #region DiceStatus
+    #region Components
     // 다이스가 배치된 보드 위치
     BoardInfo boardInfo;
     private DiceType diceType;
@@ -15,18 +15,19 @@ public class Dice : MonoBehaviour
 
     private List<DiceEye> diceEyes;
 
-    // 타겟 필요
     [SerializeField]
     private Enemy target;
 
+    #region Player Control
+    // Dice Selection
     [SerializeField]
     private float moveSpeed = 5f;
     private bool returnToInitPos;
-
     private bool selected;
-
+    // Dice Merge 
     private Dice coll;
-    private bool canMerge;
+    private bool canMerge; 
+    #endregion
 
     private void Awake()
     {
@@ -117,10 +118,10 @@ public class Dice : MonoBehaviour
 
     public void SetTarget(Enemy enemy)
     {
-        if (target == enemy) 
-        {
-            return; 
-        }
+        //if (target == enemy) 
+        //{
+        //    return; 
+        //}
 
         target = enemy;
         foreach(DiceEye diceEye in diceEyes)
@@ -145,19 +146,7 @@ public class Dice : MonoBehaviour
     }
     #endregion
 
-    public void CreateDiceEye()
-    {
-        if (diceEyes.Count >= 6) return;
-
-        DiceEye diceEye = Instantiate(diceEyePrefab, transform);
-        diceEye.Init(diceType);
-        //diceEye.GetComponent<SpriteRenderer>().color = diceType.diceEyeColor;
-        diceEyes.Add(diceEye);
-
-        ArrangeDiceEyePostion();
-    }
-
-    // 같은 타입, 눈의 개수를 가진 주사위와 Merge한다.
+    #region Dice
     public bool Merge(DiceType randType)
     {
         if (!canMerge) return false;
@@ -172,6 +161,35 @@ public class Dice : MonoBehaviour
         Destroy(this.gameObject);
 
         return true;
+    }
+
+    private void MoveToInitPos()
+    {
+        transform.position = Vector2.Lerp(transform.position, boardInfo.boardPos, moveSpeed * Time.deltaTime);
+    }
+
+    private bool ReachedInitPos()
+    {
+        Vector2 currentPos = transform.position;
+        if (Vector2.Distance(currentPos, boardInfo.boardPos) < 0.001f)
+        {
+            return true;
+        }
+
+        return false;
+    } 
+    #endregion
+
+    #region DiceEye
+    public void CreateDiceEye()
+    {
+        if (diceEyes.Count >= 6) return;
+
+        DiceEye diceEye = Instantiate(diceEyePrefab, transform);
+        diceEye.Init(diceType);
+        diceEyes.Add(diceEye);
+
+        ArrangeDiceEyePostion();
     }
 
     private void ArrangeDiceEyePostion()
@@ -194,21 +212,7 @@ public class Dice : MonoBehaviour
                 diceEyes[count - 1].transform.localPosition = new Vector3(0.133f, 0);
                 break;
         }
-    }
+    } 
+    #endregion
 
-    private void MoveToInitPos()
-    {
-        transform.position = Vector2.Lerp(transform.position, boardInfo.boardPos, moveSpeed * Time.deltaTime);
-    }
-
-    private bool ReachedInitPos()
-    {
-        Vector2 currentPos = transform.position;
-        if (Vector2.Distance(currentPos, boardInfo.boardPos) < 0.001f)
-        {
-            return true;
-        }
-
-        return false;
-    }
 }

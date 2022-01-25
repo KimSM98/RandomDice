@@ -20,6 +20,7 @@ public class EnemyManager : MonoBehaviour
     private Enemy leadingEnemy;
     private Enemy mostHPEnemy;
 
+    [SerializeField]
     private bool spawnPause;
 
 
@@ -31,6 +32,8 @@ public class EnemyManager : MonoBehaviour
         enemySpawner = GetComponent<EnemySpawner>();
         playerStatus = GetComponentInParent<PlayerStatus>();
         initEnemyRoad();
+
+        GameManager.instance.AddEnemyManager(this);
 
         StartCoroutine(EnemySpawning());
     }
@@ -114,18 +117,19 @@ public class EnemyManager : MonoBehaviour
     }
 
     #region SpawnEnemy
-    IEnumerator EnemySpawning()
+    public void StartEnemySpawning()
     {
-        while (spawnPause != false)
-        {
-            // 여기가 문제
-            //if (spawnPause == false) continue;
+        StartCoroutine(EnemySpawning());
+    }
 
+    public IEnumerator EnemySpawning()
+    {
+        Debug.Log("EnemySpawn 시작");
+        while (true)
+        {
             yield return new WaitForSeconds(spawnDelay);
             SpawnEnemy();
         }
-        Debug.Log("EnemySpawn끝");
-
 
     }
 
