@@ -25,6 +25,7 @@ public class Enemy : MonoBehaviour
 
     #region Components
     private EnemyManager enemyManager;
+    [SerializeField]
     private PlayerStatus playerStatus; 
     #endregion
 
@@ -141,9 +142,7 @@ public class Enemy : MonoBehaviour
     {
         if (nextRoad == null) // 끝에 도달 또는 Road가 세팅되지 않음
         {
-            //임시
             isDead = true;
-            //gameData.TakeDamage(attackPower);
             playerStatus.TakeDamage(attackPower);
             InactivateEnemy();
             return;
@@ -186,7 +185,6 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(float damage)
     {
         hp -= damage;
-        //Debug.Log("m HP : " + hp);
 
         if(hp <= 0)
         {

@@ -5,6 +5,8 @@ using UnityEngine;
 public class BulletManager : MonoBehaviour
 {
     public Bullet bulletPrefab;
+    [SerializeField]
+    private int initNumOfObj = 20;
 
     private List<Bullet> pendingBullets;
     private List<Bullet> activeBullets;
@@ -14,7 +16,7 @@ public class BulletManager : MonoBehaviour
         pendingBullets = new List<Bullet>();
         activeBullets = new List<Bullet>();
 
-        for(int i = 0; i < 20; i++)
+        for(int i = 0; i < initNumOfObj; i++)
         {
             Bullet bullet = Instantiate(bulletPrefab);
             bullet.gameObject.SetActive(false);

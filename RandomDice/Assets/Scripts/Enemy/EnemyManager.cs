@@ -11,8 +11,9 @@ public class EnemyManager : MonoBehaviour
     #region Components
     private EnemyRoad enemyRoad;
     private Road startRoad;
-    private Road endRoad;
     private EnemySpawner enemySpawner;
+    private int numOfMonsterType;
+    [SerializeField]
     private PlayerStatus playerStatus;
     #endregion
 
@@ -21,21 +22,22 @@ public class EnemyManager : MonoBehaviour
     private Enemy mostHPEnemy;
 
     [SerializeField]
-    private bool spawnPause;
-
+    private bool isSpawning;
 
     private void Start()
     {
-        spawnPause = false;
+        isSpawning = false;
 
         enemies = new List<Enemy>();
+        
         enemySpawner = GetComponent<EnemySpawner>();
+        numOfMonsterType = enemySpawner.GetNumOfMonsterType();
+
         playerStatus = GetComponentInParent<PlayerStatus>();
         initEnemyRoad();
 
         GameManager.instance.AddEnemyManager(this);
 
-        StartCoroutine(EnemySpawning());
     }
 
     private void Update()
@@ -51,14 +53,13 @@ public class EnemyManager : MonoBehaviour
     {
         enemyRoad = GetComponent<EnemyRoad>();
         startRoad = enemyRoad.GetRoad(0);
-        endRoad = enemyRoad.GetRoad(3);
     }
     #endregion
 
     #region Setter/Getter
-    public void SetSpawnPause(bool val)
+    public void SetSpawnCondition(bool val)
     {
-        spawnPause = val;
+        isSpawning = val;
     }
 
     public Enemy GetLeadingTarget()
@@ -124,18 +125,16 @@ public class EnemyManager : MonoBehaviour
 
     public IEnumerator EnemySpawning()
     {
-        Debug.Log("EnemySpawn 시작");
-        while (true)
+        while (isSpawning)
         {
             yield return new WaitForSeconds(spawnDelay);
             SpawnEnemy();
         }
-
     }
 
     private void SpawnEnemy()
     {
-        int typeNum = Random.Range(0, 3);
+        int typeNum = Random.Range(0, numOfMonsterType);
         Enemy enemy = enemySpawner.SpawnEnemy((EMonsterType)typeNum, startRoad);
         enemy.SetEnemyManager(this);
         enemy.SetPlayerStatus(playerStatus);

@@ -29,8 +29,7 @@ public class BulletAnimation : MonoBehaviour
 
             sprNum++;
         }
-        spriteRenderer.sprite = defaultSpr;
-        
+
         yield return null;
     }
 }

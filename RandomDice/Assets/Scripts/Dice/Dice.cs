@@ -118,11 +118,6 @@ public class Dice : MonoBehaviour
 
     public void SetTarget(Enemy enemy)
     {
-        //if (target == enemy) 
-        //{
-        //    return; 
-        //}
-
         target = enemy;
         foreach(DiceEye diceEye in diceEyes)
         {

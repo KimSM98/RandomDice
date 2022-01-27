@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    private DiceEye shootingDiceEye;
     private Enemy target;
     private DiceType type;
     [SerializeField]
@@ -12,6 +11,7 @@ public class Bullet : MonoBehaviour
 
     private SpriteRenderer sprRenderer;
     private BulletAnimation bulletAnimation;
+    private Sprite defaultSprite;
 
     private bool isShooting = false;
     private Vector2 initPos;
@@ -20,6 +20,7 @@ public class Bullet : MonoBehaviour
     private void Awake()
     {
         sprRenderer = GetComponent<SpriteRenderer>();
+        defaultSprite = sprRenderer.sprite;
         bulletAnimation = GetComponent<BulletAnimation>();
     }
 
@@ -42,11 +43,6 @@ public class Bullet : MonoBehaviour
 
         type = _type;
         sprRenderer.color = type.diceEyeColor;
-    }
-
-    public void SetShootingDiceEye(DiceEye startFrom)
-    {
-        shootingDiceEye = startFrom;
     }
 
     private void Move()
@@ -90,8 +86,9 @@ public class Bullet : MonoBehaviour
 
     private void ResetBullet()
     {
-        GameManager.instance.GetBulletManager().MoveToPendingList(this);
         gameObject.SetActive(false);
+        sprRenderer.sprite = defaultSprite;
+        GameManager.instance.GetBulletManager().MoveToPendingList(this);
     }
 
 }

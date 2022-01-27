@@ -52,6 +52,11 @@ public class EnemySpawner : MonoBehaviour
         return enemy;
     }
 
+    public int GetNumOfMonsterType()
+    {
+        return monsterTypes.Length;
+    }
+
     private Enemy GetPendingEnemy()
     {
         int lastIdx = pendingEnemies.Count - 1;
@@ -62,7 +67,7 @@ public class EnemySpawner : MonoBehaviour
 
         return lastEnemyInPendingList;
     }
-    
+
     private Enemy IntstantiateEnemy()
     {
         Enemy enemy = Instantiate(enemyPrefab);

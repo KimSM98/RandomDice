@@ -54,7 +54,6 @@ public class DiceEye : MonoBehaviour
     private void CreateBullet()
     {
         Bullet bullet = bulletManager.CreateBullet(transform.position, target, type);
-        bullet.SetShootingDiceEye(this);
     }
 
     IEnumerator Shoot()

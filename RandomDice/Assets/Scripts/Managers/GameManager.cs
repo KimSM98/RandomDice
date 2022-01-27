@@ -18,12 +18,18 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        if(instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
         Time.timeScale = 1f;
 
-        instance = this;
-
         bulletManager = GetComponent<BulletManager>();
-
         playerStatuses = new List<PlayerStatus>();
         enemyManagers = new List<EnemyManager>();
     }
@@ -36,17 +42,23 @@ public class GameManager : MonoBehaviour
     private IEnumerator GameLoop()
     {
         Debug.Log("Game Start");
+        yield return StartCoroutine(GameReady());
         yield return StartCoroutine(GamePlaying());
+    }
+
+    private IEnumerator GameReady()
+    {
+        while(playerStatuses.Count < 1 && enemyManagers.Count < 1)
+        {
+            yield return null;
+        }
+        Debug.Log("All player setting completed");
     }
 
     private IEnumerator GamePlaying()
     {
         Debug.Log("Game Playing");
-        //foreach (EnemyManager manager in enemyManagers)
-        //{
-        //    manager.SetSpawnPause(false);
-        //    //StartCoroutine(manager.EnemySpawning());
-        //}
+        ActiveEnemySpawn();
 
         // 게임 실행중
         while (!OnePlayerLeft())
@@ -55,6 +67,15 @@ public class GameManager : MonoBehaviour
         }
 
         GameOver();
+    }
+
+    private void ActiveEnemySpawn()
+    {
+        foreach (EnemyManager manager in enemyManagers)
+        {
+            manager.SetSpawnCondition(true);
+            manager.StartEnemySpawning();
+        }
     }
 
     private void GameOver()
@@ -93,7 +114,6 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
-        //Time.timeScale = 1f;
         SceneManager.LoadScene("GameScene");
     }
 }
