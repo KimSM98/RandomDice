@@ -11,7 +11,6 @@ public class Bullet : MonoBehaviour
 
     private SpriteRenderer sprRenderer;
     private BulletAnimation bulletAnimation;
-    private Sprite defaultSprite;
 
     private bool isShooting = false;
     private Vector2 initPos;
@@ -20,7 +19,6 @@ public class Bullet : MonoBehaviour
     private void Awake()
     {
         sprRenderer = GetComponent<SpriteRenderer>();
-        defaultSprite = sprRenderer.sprite;
         bulletAnimation = GetComponent<BulletAnimation>();
     }
 
@@ -81,14 +79,15 @@ public class Bullet : MonoBehaviour
     {
         yield return StartCoroutine(bulletAnimation.PlayExplosionAnim());
         ResetBullet();
-    } 
+    }
     #endregion
+
 
     private void ResetBullet()
     {
         gameObject.SetActive(false);
-        sprRenderer.sprite = defaultSprite;
-        GameManager.instance.GetBulletManager().MoveToPendingList(this);
+        bulletAnimation.InitSprite();
+        ObjectPool.instance.ReturnToPool("Bullet", this.gameObject);
     }
 
 }

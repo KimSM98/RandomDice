@@ -14,8 +14,6 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private List<EnemyManager> enemyManagers;
 
-    private BulletManager bulletManager;
-
     private void Awake()
     {
         if(instance == null)
@@ -29,7 +27,6 @@ public class GameManager : MonoBehaviour
 
         Time.timeScale = 1f;
 
-        bulletManager = GetComponent<BulletManager>();
         playerStatuses = new List<PlayerStatus>();
         enemyManagers = new List<EnemyManager>();
     }
@@ -93,11 +90,6 @@ public class GameManager : MonoBehaviour
         }
 
         return isAnyoneDead;
-    }
-
-    public BulletManager GetBulletManager()
-    {
-        return bulletManager;
     }
 
     #region Add Components

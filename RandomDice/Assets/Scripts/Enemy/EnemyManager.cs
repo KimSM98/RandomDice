@@ -113,7 +113,7 @@ public class EnemyManager : MonoBehaviour
 
     public void RemoveFromEnemies(Enemy enemy)
     {
-        enemySpawner.MoveToPendingList(enemy);
+        //enemySpawner.MoveToPendingList(enemy);
         enemies.Remove(enemy);
     }
 

@@ -144,7 +144,7 @@ public class Enemy : MonoBehaviour
         {
             isDead = true;
             playerStatus.TakeDamage(attackPower);
-            InactivateEnemy();
+            DeactivateEnemy();
             return;
         }
 
@@ -169,9 +169,10 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void InactivateEnemy()
+    private void DeactivateEnemy()
     {
         enemyManager.RemoveFromEnemies(this);
+        ObjectPool.instance.ReturnToPool("Enemy", this.gameObject); // 220211
         gameObject.SetActive(false);
     }
 
@@ -190,7 +191,7 @@ public class Enemy : MonoBehaviour
         {
             isDead = true;
             deadPos = transform.position;
-            InactivateEnemy();
+            DeactivateEnemy();
 
             playerStatus.AddSp(10);
         }

@@ -9,7 +9,6 @@ public class DiceEye : MonoBehaviour
     private DiceType type;
 
     #region Components
-    private BulletManager bulletManager;
     private SpriteRenderer spriteRenderer;
     #endregion
 
@@ -19,8 +18,6 @@ public class DiceEye : MonoBehaviour
     }
     private void Start()
     {
-        bulletManager = GameManager.instance.GetBulletManager();
-
         StartCoroutine(Shoot());
     }
 
@@ -51,9 +48,11 @@ public class DiceEye : MonoBehaviour
         target = enemy;
     }
 
-    private void CreateBullet()
+    private void SpawnBullet()
     {
-        Bullet bullet = bulletManager.CreateBullet(transform.position, target, type);
+        GameObject bulletObj = ObjectPool.instance.GetObject("Bullet", transform.position);
+        Bullet bullet = bulletObj.GetComponent<Bullet>();
+        bullet.Init(transform.position, target, type);
     }
 
     IEnumerator Shoot()
@@ -61,7 +60,7 @@ public class DiceEye : MonoBehaviour
         while(true)
         {
             if(target != null)
-                CreateBullet();
+                SpawnBullet();
 
             yield return new WaitForSeconds(type.attackSpeed);
         }

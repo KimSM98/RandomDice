@@ -12,11 +12,15 @@ public class BulletAnimation : MonoBehaviour
     private WaitForSeconds explosionAnimSpeed;
     
     private SpriteRenderer spriteRenderer;
-    
+
+    private Sprite initSpr;
+
     private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         explosionAnimSpeed = new WaitForSeconds(animSpeed);
+
+        initSpr = spriteRenderer.sprite;
     }
 
     public IEnumerator PlayExplosionAnim()
@@ -30,6 +34,11 @@ public class BulletAnimation : MonoBehaviour
             sprNum++;
         }
 
-        yield return null;
     }
+
+    public void InitSprite()
+    {
+        spriteRenderer.sprite = initSpr;
+    }
+
 }
