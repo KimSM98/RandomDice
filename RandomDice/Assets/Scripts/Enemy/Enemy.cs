@@ -8,30 +8,32 @@ public class Enemy : MonoBehaviour
     public Canvas canvas;
     public Text hpText;
 
-    #region Status var
-    public float hp;
-    public float moveSpeed;
-    public int attackPower; // Player HP에 영향 
+    #region Status with MonsterType
+    private float hp;
+    private float moveSpeed;
+    private int attackPower; // Player HP에 영향 
     #endregion
 
-    #region Movement var
-    public Road currentRoad;
+    #region Movement
+    private Road currentRoad;
     private Road nextRoad;
     private float totalDistanceTraveled = 0f;
     private float distanceTraveled = 0f;
-    [SerializeField]
     private float t; 
     #endregion
 
     #region Components
     private EnemyManager enemyManager;
-    [SerializeField]
-    private PlayerStatus playerStatus; 
+    private PlayerStatus playerStatus;
+    #endregion
+
+    #region Dead 
+    private bool isDead;
+    private Vector2 deadPos;
     #endregion
 
     [SerializeField]
-    private bool isDead;
-    private Vector2 deadPos;
+    private Vector2 damageEffectOffset;
 
     private void Update()
     {
@@ -39,27 +41,30 @@ public class Enemy : MonoBehaviour
     }
 
     #region Initialization
-    public void Init(EnemyStatus status, MonsterType type, Vector2 spawnPos)
+    public void Init(EnemyStatus status, MonsterType type, Road startRoad, PlayerStatus targetPlayer)
     {
         hp = 0f;
         t = 0f;
         isDead = false;
-
-        InitStatus(status);
-        InitType(type);
-        InitPos(spawnPos);
         InitDistance();
 
+        InitStatus(status);
+        InitStatusByType(type);
+        SetCurrentRoad(startRoad);
+        SetTargetPlayerStatus(targetPlayer);
+
         InitCanvas();
-        InitHpText();
+        UpdateHpText();
     }
 
-    private void InitPos(Vector2 spawnPos)
+    private void InitStatus(EnemyStatus status)
     {
-        transform.position = spawnPos;
+        hp = status.hp;
+        moveSpeed = status.moveSpeed;
+        attackPower = status.attackPower;
     }
 
-    private void InitType(MonsterType type)
+    private void InitStatusByType(MonsterType type)
     {
         InitSprite(type.sprite);
         hp *= type.HpMult;
@@ -72,12 +77,6 @@ public class Enemy : MonoBehaviour
         GetComponent<SpriteRenderer>().sprite = spr;
     }
 
-    private void InitStatus(EnemyStatus status)
-    {
-        hp = status.hp;
-        moveSpeed = status.moveSpeed;
-        attackPower = status.attackPower;
-    }
 
     private void InitDistance()
     {
@@ -91,20 +90,21 @@ public class Enemy : MonoBehaviour
         canvasTransform.position = transform.position;
     }
 
-    public void InitHpText()
+    public void UpdateHpText()
     {
         hpText.text = hp.ToString();
     }
     #endregion
 
     #region Setter/Getter
+    // Enemy가 비활성화되면 EnemyManager 리스트에서 지우기 위해서 설정
     public void SetEnemyManager(EnemyManager manager)
     {
         if (enemyManager != null) return;
         enemyManager = manager;
     }
 
-    public void SetPlayerStatus(PlayerStatus status)
+    public void SetTargetPlayerStatus(PlayerStatus status)
     {
         if (playerStatus != null) return;
         playerStatus = status;
@@ -163,7 +163,7 @@ public class Enemy : MonoBehaviour
         if (t >= 1f)
         {
             t = 0f;
-            AddTotalDist();
+            AddTotalDistance();
 
             SetCurrentRoad(currentRoad.GetNextRoad());
         }
@@ -171,23 +171,25 @@ public class Enemy : MonoBehaviour
 
     private void DeactivateEnemy()
     {
-        enemyManager.RemoveFromEnemies(this);
+        enemyManager.RemoveFromList(this);
         ObjectPool.instance.ReturnToPool("Enemy", this.gameObject); // 220211
         gameObject.SetActive(false);
     }
 
-    private void AddTotalDist()
+    private void AddTotalDistance()
     {
         totalDistanceTraveled += distanceTraveled;
         distanceTraveled = 0f;
-    } 
+    }
     #endregion
 
+    #region Damage
     public void TakeDamage(float damage)
     {
-        hp -= damage;
+        hp = Mathf.Max(0, hp -= damage);
+        UpdateHpText();
 
-        if(hp <= 0)
+        if (hp <= 0)
         {
             isDead = true;
             deadPos = transform.position;
@@ -195,5 +197,18 @@ public class Enemy : MonoBehaviour
 
             playerStatus.AddSp(10);
         }
+
+        CallDamageEffect(damage);
     }
+
+    private void CallDamageEffect(float damage)
+    {
+        Vector2 damageEffectPos = transform.position;
+        damageEffectPos += damageEffectOffset;
+
+        GameObject damageObj = ObjectPool.instance.GetObject("DamageEffect", damageEffectPos);
+        DamageEffect damageEffect = damageObj.GetComponent<DamageEffect>();
+        damageEffect.DisplayDamage(damage);
+    } 
+    #endregion
 }

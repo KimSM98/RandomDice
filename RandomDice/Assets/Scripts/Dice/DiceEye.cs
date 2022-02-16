@@ -52,7 +52,7 @@ public class DiceEye : MonoBehaviour
     {
         GameObject bulletObj = ObjectPool.instance.GetObject("Bullet", transform.position);
         Bullet bullet = bulletObj.GetComponent<Bullet>();
-        bullet.Init(transform.position, target, type);
+        bullet.Init(target, type);
     }
 
     IEnumerator Shoot()

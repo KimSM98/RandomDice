@@ -67,7 +67,7 @@ MonoBehaviour:
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 35
-    m_FontStyle: 0
+    m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 100
@@ -180,7 +180,9 @@ MonoBehaviour:
   attackPower: 0
   currentRoad: {fileID: 0}
   t: 0
+  playerStatus: {fileID: 0}
   isDead: 0
+  damageEffectOffset: {x: 0, y: 0.6}
 --- !u!1 &7720729129959147696
 GameObject:
   m_ObjectHideFlags: 0

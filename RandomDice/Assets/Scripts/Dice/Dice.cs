@@ -7,8 +7,7 @@ public class Dice : MonoBehaviour
     public DiceEye diceEyePrefab;
 
     #region Components
-    // 다이스가 배치된 보드 위치
-    BoardInfo boardInfo;
+    private BoardInfo boardInfo;
     private DiceType diceType;
     private SpriteRenderer spriteRenderer;
     #endregion
@@ -16,17 +15,18 @@ public class Dice : MonoBehaviour
     private List<DiceEye> diceEyes;
 
     [SerializeField]
-    private Enemy target;
-
-    #region Player Control
-    // Dice Selection
+    private Enemy target; // target to attack
+    
+    #region Dice Selection var
     [SerializeField]
     private float moveSpeed = 5f;
     private bool returnToInitPos;
     private bool selected;
-    // Dice Merge 
+    #endregion    
+
+    #region Dice Merger var
     private Dice coll;
-    private bool canMerge; 
+    private bool canMerge;
     #endregion
 
     private void Awake()

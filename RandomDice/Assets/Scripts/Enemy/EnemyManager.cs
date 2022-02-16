@@ -1,43 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Type;
 
 public class EnemyManager : MonoBehaviour
-{
-    public EnemyStatus baseStatus;
-    public float spawnDelay = 1f;
-
-    #region Components
-    private EnemyRoad enemyRoad;
-    private Road startRoad;
-    private EnemySpawner enemySpawner;
-    private int numOfMonsterType;
-    [SerializeField]
-    private PlayerStatus playerStatus;
-    #endregion
-
+{    
+    // Enemy Targeting
     private List<Enemy> enemies;
     private Enemy leadingEnemy;
     private Enemy mostHPEnemy;
 
-    [SerializeField]
-    private bool isSpawning;
-
     private void Start()
     {
-        isSpawning = false;
-
         enemies = new List<Enemy>();
-        
-        enemySpawner = GetComponent<EnemySpawner>();
-        numOfMonsterType = enemySpawner.GetNumOfMonsterType();
-
-        playerStatus = GetComponentInParent<PlayerStatus>();
-        initEnemyRoad();
-
-        GameManager.instance.AddEnemyManager(this);
-
     }
 
     private void Update()
@@ -48,19 +22,7 @@ public class EnemyManager : MonoBehaviour
         UpdateMostHpEnemy();
     }
 
-    #region Initialization
-    private void initEnemyRoad()
-    {
-        enemyRoad = GetComponent<EnemyRoad>();
-        startRoad = enemyRoad.GetRoad(0);
-    }
-    #endregion
-
     #region Setter/Getter
-    public void SetSpawnCondition(bool val)
-    {
-        isSpawning = val;
-    }
 
     public Enemy GetLeadingTarget()
     {
@@ -101,46 +63,28 @@ public class EnemyManager : MonoBehaviour
         float mostHP = 0f;
         foreach (Enemy e in enemies)
         {
-            float eHp = e.GetHP();
+            float eHP = e.GetHP();
 
-            if (mostHP > eHp) continue;
+            if (mostHP > eHP) continue;
 
             mostHPEnemy = e;
-            mostHP = eHp;
+            mostHP = eHP;
         }
     } 
     #endregion
 
-    public void RemoveFromEnemies(Enemy enemy)
+    public void RemoveFromList(Enemy enemy)
     {
-        //enemySpawner.MoveToPendingList(enemy);
         enemies.Remove(enemy);
     }
-
-    #region SpawnEnemy
-    public void StartEnemySpawning()
+    public void AddEnemyToList(Enemy enemySpawned)
     {
-        StartCoroutine(EnemySpawning());
+        enemies.Add(enemySpawned);
     }
-
-    public IEnumerator EnemySpawning()
+    
+    public void InitEnemyByEnemyManager(Enemy enemy)
     {
-        while (isSpawning)
-        {
-            yield return new WaitForSeconds(spawnDelay);
-            SpawnEnemy();
-        }
-    }
-
-    private void SpawnEnemy()
-    {
-        int typeNum = Random.Range(0, numOfMonsterType);
-        Enemy enemy = enemySpawner.SpawnEnemy((EMonsterType)typeNum, startRoad);
         enemy.SetEnemyManager(this);
-        enemy.SetPlayerStatus(playerStatus);
-
-        enemies.Add(enemy);
-    } 
-    #endregion
-
+        AddEnemyToList(enemy);
+    }
 }

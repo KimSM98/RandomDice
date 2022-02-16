@@ -13,7 +13,7 @@ public class Bullet : MonoBehaviour
     private BulletAnimation bulletAnimation;
 
     private bool isShooting = false;
-    private Vector2 initPos;
+    private Vector2 startPos;
     private float t;
 
     private void Awake()
@@ -30,11 +30,10 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    public void Init(Vector2 pos, Enemy _target, DiceType _type)
+    public void Init(Enemy _target, DiceType _type)
     {
         isShooting = true;
-        transform.position = pos;
-        initPos = pos;
+        startPos = transform.position;
         t = 0f;
 
         target = _target;
@@ -45,12 +44,12 @@ public class Bullet : MonoBehaviour
 
     private void Move()
     {
-        float dist = Vector2.Distance(initPos, target.transform.position);
+        float dist = Vector2.Distance(startPos, target.transform.position);
         float ratioOfDist = moveSpeed / dist;
         t += ratioOfDist * Time.deltaTime;
 
         Vector2 destination = target.transform.position;
-        transform.position = Vector2.Lerp(initPos, destination, t);
+        transform.position = Vector2.Lerp(startPos, destination, t);
 
         
         if (t >= 1f || target.IsDead())
@@ -77,7 +76,12 @@ public class Bullet : MonoBehaviour
 
     private IEnumerator ExplosionAnim()
     {
+        //GameObject damageObj = ObjectPool.instance.GetObject("DamageEffect", transform.position);
+        //DamageEffect damageEffect = damageObj.GetComponent<DamageEffect>();
+        //damageEffect.DisplayDamage(type.attackPower);
+
         yield return StartCoroutine(bulletAnimation.PlayExplosionAnim());
+        
         ResetBullet();
     }
     #endregion

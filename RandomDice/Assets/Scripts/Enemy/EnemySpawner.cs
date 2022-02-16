@@ -1,28 +1,71 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Type;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public EnemyStatus baseStatus;
+    public EnemyStatus enemyBaseStatus; // 향후 이것으로 모든 Enemy의 스탯 변경. GameManage로 가도 될 듯
     public MonsterType[] monsterTypes;
 
-    public Enemy SpawnEnemy(EMonsterType monsterType, Road startRoad)
-    {
-        Vector2 spawnPos = startRoad.transform.position;
+    [SerializeField]
+    private float spawnDelay = 1f;
+    private Road startRoad;
+    private Vector2 spawnPos;
+    private bool isSpawning = false;
+    
+    private PlayerStatus targetPlayerStatus;
 
+    private void Start()
+    {
+        GameManager.instance.AddEnemySpawner(this);
+
+        startRoad = GetComponent<EnemyRoad>().GetRoad(0);
+        spawnPos = startRoad.transform.position;
+        targetPlayerStatus = GetComponentInParent<PlayerStatus>();
+    }
+
+    #region Spawning
+    public void SpawnEnemy()
+    {
         GameObject enemyObj = ObjectPool.instance.GetObject("Enemy", spawnPos);
         Enemy enemy = enemyObj.GetComponent<Enemy>();
 
-        enemy.Init(baseStatus, monsterTypes[(int)monsterType], spawnPos);
-        enemy.SetCurrentRoad(startRoad);
-
-        return enemy;
+        InitEnemy(enemy);
     }
 
-    public int GetNumOfMonsterType()
+    private void InitEnemy(Enemy enemy)
     {
-        return monsterTypes.Length;
+        enemy.Init(enemyBaseStatus, RandomMonsterType(), startRoad, targetPlayerStatus);
+        GetComponent<EnemyManager>().InitEnemyByEnemyManager(enemy);
     }
+
+    private MonsterType RandomMonsterType() 
+    {
+        int randomType = Random.Range(0, monsterTypes.Length);
+
+        return monsterTypes[randomType];
+    }
+    
+    public void StartEnemySpawning()
+    {
+        StartCoroutine(EnemySpawing());
+    }
+
+    IEnumerator EnemySpawing()
+    {
+        while(isSpawning)
+        {
+            yield return new WaitForSeconds(spawnDelay);
+            SpawnEnemy();
+        }
+    }
+    #endregion
+
+    #region Setter
+    public void SetSpawnCondition(bool condition)
+    {
+        isSpawning = condition;
+    }
+    #endregion
+
 }

@@ -29,12 +29,14 @@ public class ObjectPool : MonoBehaviour
         {
             instance = this;
         }
-    }
 
-    private void Start()
-    {
         InitPoolDicts();
     }
+
+    //private void Start()
+    //{
+    //    InitPoolDicts();
+    //}
     #endregion
 
     #region Object Pool Methods

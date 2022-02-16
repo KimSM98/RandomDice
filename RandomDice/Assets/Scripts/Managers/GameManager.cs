@@ -12,8 +12,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private List<PlayerStatus> playerStatuses;
     [SerializeField]
-    private List<EnemyManager> enemyManagers;
+    private List<EnemySpawner> enemySpawners;
 
+    #region Unity Methods
     private void Awake()
     {
         if(instance == null)
@@ -28,13 +29,14 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
 
         playerStatuses = new List<PlayerStatus>();
-        enemyManagers = new List<EnemyManager>();
+        enemySpawners = new List<EnemySpawner>();
     }
 
     private void Start()
     {
         StartCoroutine(GameLoop());
     }
+    #endregion
 
     private IEnumerator GameLoop()
     {
@@ -45,7 +47,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator GameReady()
     {
-        while(playerStatuses.Count < 1 && enemyManagers.Count < 1)
+        while(playerStatuses.Count < 1 && enemySpawners.Count < 1)
         {
             yield return null;
         }
@@ -68,17 +70,22 @@ public class GameManager : MonoBehaviour
 
     private void ActiveEnemySpawn()
     {
-        foreach (EnemyManager manager in enemyManagers)
+        foreach(EnemySpawner spawner in enemySpawners)
         {
-            manager.SetSpawnCondition(true);
-            manager.StartEnemySpawning();
-        }
+            spawner.SetSpawnCondition(true);
+            spawner.StartEnemySpawning();
+        }        
     }
 
+    #region Game Conditions
     private void GameOver()
     {
         gameOverUI.gameObject.SetActive(true);
         Time.timeScale = 0f;
+    }
+    public void RestartGame()
+    {
+        SceneManager.LoadScene("GameScene");
     }
 
     private bool OnePlayerLeft()
@@ -91,6 +98,7 @@ public class GameManager : MonoBehaviour
 
         return isAnyoneDead;
     }
+    #endregion
 
     #region Add Components
     public void AddPlayerStatus(PlayerStatus status)
@@ -98,14 +106,10 @@ public class GameManager : MonoBehaviour
         playerStatuses.Add(status);
     }
 
-    public void AddEnemyManager(EnemyManager manager)
+    public void AddEnemySpawner(EnemySpawner spawner)
     {
-        enemyManagers.Add(manager);
+        enemySpawners.Add(spawner);
     }
     #endregion
 
-    public void RestartGame()
-    {
-        SceneManager.LoadScene("GameScene");
-    }
 }
