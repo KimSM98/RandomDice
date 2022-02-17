@@ -9,14 +9,19 @@ public class DamageEffect : MonoBehaviour
     private TextMeshProUGUI damageText;
     private Color initColor;
     
+    // Size pumping
     [SerializeField]
-    private float displayDuration = 0.1f;
-    private WaitForSeconds displayWait;
+    private Vector3 sizeUpScale = new Vector3(1.1f, 1.1f, 1f);
+    private Vector3 originScale;
+    [SerializeField]
+    private float sizeUpSpeed = 4f;
+
 
     private void Start()
     {
         initColor = damageText.color;
-        displayWait = new WaitForSeconds(displayDuration);
+        originScale = transform.localScale;
+        //displayWait = new WaitForSeconds(displayDuration);
     }
 
     public void DisplayDamage(float damage)
@@ -27,11 +32,25 @@ public class DamageEffect : MonoBehaviour
 
     IEnumerator DamageEffectDisplayer()
     {
-        yield return displayWait;
+        yield return StartCoroutine(SizePumping());
         yield return StartCoroutine(FadeOut());
 
         gameObject.SetActive(false);
         ResetObject();
+    }
+
+    IEnumerator SizePumping()
+    {
+        float t = 0f;
+        while(t < 1f)
+        {
+            transform.localScale = Vector3.Lerp(transform.localScale, sizeUpScale, t);
+            t += Time.deltaTime * sizeUpSpeed;
+            yield return null;
+        }
+
+        // Reset scale
+        transform.localScale = originScale;
     }
 
     IEnumerator FadeOut()
@@ -57,5 +76,6 @@ public class DamageEffect : MonoBehaviour
     {
         ObjectPool.instance.ReturnToPool("DamageEffect", this.gameObject);
         damageText.color = initColor;
+        transform.localScale = originScale;
     }
 }

@@ -175,14 +175,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvas: {fileID: 7720729129959147700}
   hpText: {fileID: 7720729129232313382}
-  hp: 0
-  moveSpeed: 0
-  attackPower: 0
-  currentRoad: {fileID: 0}
-  t: 0
-  playerStatus: {fileID: 0}
-  isDead: 0
-  damageEffectOffset: {x: 0, y: 0.6}
+  damageEffectOffset: {x: 0, y: 0.35}
 --- !u!1 &7720729129959147696
 GameObject:
   m_ObjectHideFlags: 0

@@ -86,6 +86,7 @@
     <Compile Include="Assets\Scripts\ObjectPool.cs" />
     <Compile Include="Assets\Scripts\ScriptableObjects\DiceType\DiceType.cs" />
     <Compile Include="Assets\Scripts\ScriptableObjects\Monster\Type\MonsterType.cs" />
+    <Compile Include="Assets\Scripts\Skill\Skill.cs" />
     <Compile Include="Assets\Scripts\Statuses\PlayerStatus.cs" />
     <Compile Include="Assets\Scripts\Statuses\UserStatus.cs" />
     <Compile Include="Assets\Scripts\UI\LifeUI.cs" />
