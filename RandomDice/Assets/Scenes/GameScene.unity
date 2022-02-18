@@ -349,6 +349,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96791b837e2c7854dacb761c4349fd0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activeDices: []
 --- !u!1 &108434786
 GameObject:
   m_ObjectHideFlags: 0
@@ -384,7 +385,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -16.219955}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &222466937
@@ -645,7 +646,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -16.219955}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &519420028
@@ -1234,6 +1235,9 @@ MonoBehaviour:
   gameOverUI: {fileID: 697790994}
   playerStatuses: []
   enemySpawners: []
+  bosses: []
+  bossSpawnTime: 5
+  bossSpawnTimer: 0
 --- !u!4 &792023329
 Transform:
   m_ObjectHideFlags: 0
@@ -1375,6 +1379,7 @@ Transform:
   - {fileID: 1599399110}
   - {fileID: 553238255}
   - {fileID: 222466938}
+  - {fileID: 1437831824}
   m_Father: {fileID: 1265985997}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1425,6 +1430,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1ab4d8a755a432642b7da3e36fd40dde, type: 2}
   - {fileID: 11400000, guid: eb7567cc3c6ef8844b140206b34c2e44, type: 2}
   - {fileID: 11400000, guid: 166c206aa68dab94ea145bec7b7d1ef7, type: 2}
+  bossStatus: {fileID: 2112655934893425786, guid: 41ab84ccc5467d04e800fbc02ed7654e,
+    type: 3}
+  bossTypes:
+  - {fileID: 11400000, guid: ecb12f91a58791b44a1c5221ae5542a9, type: 2}
+  - {fileID: 11400000, guid: c6a17a3ee58638f43bea21ba00302766, type: 2}
+  - {fileID: 11400000, guid: 53c534df12fce35428a09725242d6964, type: 2}
+  gatheringPosObject: {fileID: 1437831823}
   spawnDelay: 1
 --- !u!1 &854066079
 GameObject:
@@ -1597,7 +1609,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 11.9, y: -688.78}
+  m_AnchoredPosition: {x: 11.9, y: -705}
   m_SizeDelta: {x: 187.80493, y: 224.44977}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1100933214
@@ -1883,7 +1895,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1265985995}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.14, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 72323744}
@@ -2019,6 +2031,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40fd780be0d644a4ebaa6b99e2de7133, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1437831823
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1437831824}
+  m_Layer: 0
+  m_Name: GatheringPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1437831824
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1437831823}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.44, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 841467593}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1444537223
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -35,9 +35,15 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private Vector2 damageEffectOffset;
 
+    private bool isMove = true;
+    // Boss property
+    [SerializeField]
+    private bool isBossEnemy = false;
+
     private void Update()
     {
-        MoveToNextRoad();
+        if(isMove)
+            MoveToNextRoad();
     }
 
     #region Initialization
@@ -46,6 +52,7 @@ public class Enemy : MonoBehaviour
         hp = 0f;
         t = 0f;
         isDead = false;
+        isMove = true;
         InitDistance();
 
         InitStatus(status);
@@ -54,7 +61,7 @@ public class Enemy : MonoBehaviour
         SetTargetPlayerStatus(targetPlayer);
 
         InitCanvas();
-        UpdateHpText();
+        UpdateHPText();
     }
 
     private void InitStatus(EnemyStatus status)
@@ -90,13 +97,25 @@ public class Enemy : MonoBehaviour
         canvasTransform.position = transform.position;
     }
 
-    public void UpdateHpText()
+    #endregion
+    
+    public void AddHP(float val)
+    {
+        hp += val;
+        UpdateHPText();
+    }
+
+    public void UpdateHPText()
     {
         hpText.text = hp.ToString();
     }
-    #endregion
 
     #region Setter/Getter
+    public void SetIsMove(bool val)
+    {
+        isMove = val;
+    }
+    
     // Enemy가 비활성화되면 EnemyManager 리스트에서 지우기 위해서 설정
     public void SetEnemyManager(EnemyManager manager)
     {
@@ -114,6 +133,11 @@ public class Enemy : MonoBehaviour
     {
         currentRoad = road;
         nextRoad = currentRoad.GetNextRoad();
+    }
+
+    public void SetIsBossEnemy(bool val)
+    {
+        isBossEnemy = val;
     }
 
     public float GetCurrentDistanceTraveled()
@@ -169,10 +193,19 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void DeactivateEnemy()
+    public void DeactivateEnemy()
     {
         enemyManager.RemoveFromList(this);
-        ObjectPool.instance.ReturnToPool("Enemy", this.gameObject); // 220211
+        ObjectPool.instance.ReturnToPool("Enemy", this.gameObject);
+        
+        if(isBossEnemy)
+        {
+            GameManager.instance.RemoveBoss(this);
+            isBossEnemy = false;
+        }
+
+        isMove = false;
+
         gameObject.SetActive(false);
     }
 
@@ -187,7 +220,7 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(float damage)
     {
         hp = Mathf.Max(0, hp -= damage);
-        UpdateHpText();
+        UpdateHPText();
 
         if (hp <= 0)
         {

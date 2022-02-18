@@ -11,7 +11,10 @@ public class DiceManager : MonoBehaviour
     private PlayerStatus playerStatus;
     #endregion
 
+    [SerializeField]
     private List<Dice> activeDices;
+
+    private bool activeAttack = true;
 
     private void Start()
     {
@@ -28,7 +31,7 @@ public class DiceManager : MonoBehaviour
     {
         if (activeDices.Count < 1) return;
 
-        UpdateAttackTarget();
+        UpdateAllDiceTarget();
     }
 
     public void SpawnDice()
@@ -46,20 +49,10 @@ public class DiceManager : MonoBehaviour
         playerStatus.SpawnDice();
     }
 
-    public List<Dice> GetDiceList()
+    private void UpdateAllDiceTarget()
     {
-        return activeDices;
-    }
+        if (!activeAttack) return;
 
-    public void RemoveActiveDice(Dice dice)
-    {
-        spawnPos.MoveToEmptyBoard(dice.GetBoardInfo());
-
-        activeDices.Remove(dice);
-    }
-
-    private void UpdateAttackTarget()
-    {
         foreach(Dice dice in activeDices)
         {
             DiceType.TargetType targetType = dice.GetDiceTargetType();
@@ -85,4 +78,30 @@ public class DiceManager : MonoBehaviour
             dice.SetTarget(target);
         }
     }
+
+    public void ActiveAttack(bool val)
+    {
+        activeAttack = val;
+    }
+
+    public void ResetAllDiceTarget()
+    {
+        foreach(Dice dice in activeDices)
+        {
+            dice.SetTarget(null);
+        }
+    }
+    
+    #region Dice List Methods
+    public List<Dice> GetDiceList()
+    {
+        return activeDices;
+    }
+    public void RemoveActiveDice(Dice dice)
+    {
+        spawnPos.MoveToEmptyBoard(dice.GetBoardInfo());
+
+        activeDices.Remove(dice);
+    } 
+    #endregion
 }

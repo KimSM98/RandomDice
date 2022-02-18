@@ -41,6 +41,11 @@ public class EnemyManager : MonoBehaviour
         int enemyNum = Random.Range(0, enemies.Count);
         return enemies[enemyNum];
     }
+
+    public List<Enemy> GetEnemies()
+    {
+        return enemies;
+    }
     #endregion
 
     #region UpdateTarget
@@ -82,6 +87,7 @@ public class EnemyManager : MonoBehaviour
         enemies.Add(enemySpawned);
     }
     
+    // Enemy가 마지막 Road에 도달하거나 죽었을 때 EnemyManager의 리스트에서 빼기 위한 것이다.
     public void InitEnemyByEnemyManager(Enemy enemy)
     {
         enemy.SetEnemyManager(this);
