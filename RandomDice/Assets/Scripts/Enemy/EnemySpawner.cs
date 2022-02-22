@@ -67,8 +67,6 @@ public class EnemySpawner : MonoBehaviour
 
     IEnumerator BossSpawing()
     {
-        StopDiceAttack();
-
         List<Enemy> enemies = GetComponent<EnemyManager>().GetEnemies();
 
         // Enemy gathering animation
@@ -79,8 +77,6 @@ public class EnemySpawner : MonoBehaviour
         DeactivateAllEnemiesInList(enemies);
 
         yield return StartCoroutine(SpawnBoss());
-
-        StartDiceAttack();
     }
 
     private IEnumerator SpawnBoss()
@@ -159,21 +155,6 @@ public class EnemySpawner : MonoBehaviour
     {
         isSpawning = condition;
     }
-    #endregion
-
-    #region Dice Attack Condition
-    private void StartDiceAttack()
-    {
-        DiceManager diceManager = transform.parent.GetComponentInChildren<DiceManager>();
-        diceManager.ActiveAttack(true);
-    }
-
-    private void StopDiceAttack()
-    {
-        DiceManager diceManager = transform.parent.GetComponentInChildren<DiceManager>();
-        diceManager.ActiveAttack(false);
-        diceManager.ResetAllDiceTarget();
-    } 
     #endregion
     
     private Enemy GetEnemyObjectFromPool(Vector2 pos)

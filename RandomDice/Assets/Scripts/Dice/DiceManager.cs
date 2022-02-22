@@ -18,6 +18,8 @@ public class DiceManager : MonoBehaviour
 
     private void Start()
     {
+        GameManager.instance.AddDiceManager(this);
+
         activeDices = new List<Dice>();
         diceSpawner = GetComponent<DiceSpawner>();
         spawnPos = diceSpawner.diceSpawnPos;

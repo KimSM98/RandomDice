@@ -7,26 +7,24 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+
+    [SerializeField]
+    private int numOfPlayers = 1;
     public GameObject gameOverUI;
 
     [SerializeField]
     private List<PlayerStatus> playerStatuses;
-    [SerializeField]
     private List<EnemySpawner> enemySpawners;
+    [SerializeField]
+    private List<DiceManager> diceManagers;
+
     [SerializeField]
     private List<Enemy> bosses;
 
+    [Header("Boss Spawn Timer")]
     [SerializeField]
-    private float bossSpawnTime = 20f;
-    [SerializeField]
-    private float bossSpawnTimer = 0f;
-
-    enum InGameState 
-    { 
-        MonsterWave,
-        BossRaid
-    }
-    InGameState currentInGameState;
+    private int bossSpawnTime = 20;
+    private TimerDisplay timerDisplay;
 
     #region Unity Methods
     private void Awake()
@@ -44,70 +42,73 @@ public class GameManager : MonoBehaviour
 
         playerStatuses = new List<PlayerStatus>();
         enemySpawners = new List<EnemySpawner>();
+        diceManagers = new List<DiceManager>();
         bosses = new List<Enemy>();
     }
 
     private void Start()
     {
         StartCoroutine(GameLoop());
+
+        timerDisplay = GetComponent<TimerDisplay>();
+        timerDisplay.SetTimeToCount((int)bossSpawnTime);
     }
+
     #endregion
 
     #region Game Loop Coroutines
     private IEnumerator GameLoop()
     {
-        Debug.Log("Game Start");
         yield return StartCoroutine(GameReady());
         yield return StartCoroutine(GamePlaying());
+
+        GameOver();
     }
 
     private IEnumerator GameReady()
     {
-        while (playerStatuses.Count < 1 && enemySpawners.Count < 1)
+        while (playerStatuses.Count < numOfPlayers && enemySpawners.Count < numOfPlayers)
         {
             yield return null;
         }
-        Debug.Log("All player setting completed");
     }
 
     private IEnumerator GamePlaying()
     {
-        Debug.Log("Game Playing");
-
-        currentInGameState = InGameState.MonsterWave;
-
         ActiveEnemySpawn();
+        
+        StartCoroutine(BossRaidLoop());
 
-        // 게임 실행중
-        while (!OnePlayerLeft())
+        while (!IsPlayerAlive())
         {
-            if (currentInGameState == InGameState.MonsterWave)
-                bossSpawnTimer += Time.deltaTime;
-
-            if (bossSpawnTimer > bossSpawnTime)
-            {
-                bossSpawnTimer = 0f;
-                yield return StartCoroutine(BossRaid());
-            }
-
             yield return null;
         }
-
-        GameOver();
     }
+
     #endregion
 
-    #region Boss Raid
+    #region Boss Raid Loop
+    IEnumerator BossRaidLoop()
+    {
+        while(!IsPlayerAlive())
+        {
+            yield return StartCoroutine(timerDisplay.RunTimer());
+            yield return StartCoroutine(BossRaid());
+            timerDisplay.ResetTimer();
+        }
+    }
+
     IEnumerator BossRaid()
     {
-        Debug.Log("On boss raid situation");
-
-        currentInGameState = InGameState.BossRaid;
-
+        StopDiceAttack();
         DeactivateEnemySpawn();
-        SpawnBoss();
 
+        yield return new WaitForSeconds(0.5f);
+        
+        SpawnBoss();
         yield return WaitBossSpawing();
+        
+        StartDiceAttack();
 
         while (IsBossAlive())
         {
@@ -116,7 +117,6 @@ public class GameManager : MonoBehaviour
 
         // End of boss raid
         ActiveEnemySpawn();
-        currentInGameState = InGameState.MonsterWave;
     }
     private void SpawnBoss()
     {
@@ -154,7 +154,6 @@ public class GameManager : MonoBehaviour
 
     private void DeactivateEnemySpawn()
     {
-        Debug.Log("Enemy spawn 중지");
         foreach (EnemySpawner spawner in enemySpawners)
         {
             spawner.SetSpawnCondition(false);
@@ -170,15 +169,16 @@ public class GameManager : MonoBehaviour
     }
     public void RestartGame()
     {
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    private bool OnePlayerLeft()
+    public bool IsPlayerAlive()
     {
         bool isAnyoneDead = false;
         foreach (PlayerStatus status in playerStatuses)
         {
             isAnyoneDead = status.isPlayerDead();
+            if (isAnyoneDead) break;
         }
 
         return isAnyoneDead;
@@ -196,6 +196,11 @@ public class GameManager : MonoBehaviour
         enemySpawners.Add(spawner);
     }
 
+    public void AddDiceManager(DiceManager manager)
+    {
+        diceManagers.Add(manager);
+    }
+
     public void AddBoss(Enemy boss)
     {
         bosses.Add(boss);
@@ -207,4 +212,22 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
+    #region Dice Attack Control
+    private void StartDiceAttack()
+    {
+        foreach (DiceManager manager in diceManagers)
+        {
+            manager.ActiveAttack(true);
+        }
+    }
+
+    private void StopDiceAttack()
+    {
+        foreach (DiceManager manager in diceManagers)
+        {
+            manager.ActiveAttack(false);
+            manager.ResetAllDiceTarget();
+        }
+    } 
+    #endregion
 }
