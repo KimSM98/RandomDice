@@ -23,7 +23,7 @@ public class Enemy : MonoBehaviour
     #endregion
 
     #region Components
-    private EnemyManager enemyManager;
+    private EnemyTargeter currentlyRegisteredList;
     private PlayerStatus playerStatus;
     #endregion
 
@@ -115,12 +115,13 @@ public class Enemy : MonoBehaviour
     {
         isMove = val;
     }
-    
-    // Enemy가 비활성화되면 EnemyManager 리스트에서 지우기 위해서 설정
-    public void SetEnemyManager(EnemyManager manager)
+
+    // Enemy가 비활성화되면 EnemyTargeter 리스트에서 지우기 위해서 설정
+    // Enemy가 등록되어 있는 리스트
+    public void SetRegisteredList(EnemyTargeter currentTargeter)
     {
-        if (enemyManager != null) return;
-        enemyManager = manager;
+        if (currentlyRegisteredList != null) return;
+        currentlyRegisteredList = currentTargeter;
     }
 
     public void SetTargetPlayerStatus(PlayerStatus status)
@@ -195,7 +196,7 @@ public class Enemy : MonoBehaviour
 
     public void DeactivateEnemy()
     {
-        enemyManager.RemoveFromList(this);
+        currentlyRegisteredList.RemoveFromList(this);
         ObjectPool.instance.ReturnToPool("Enemy", this.gameObject);
         
         if(isBossEnemy)

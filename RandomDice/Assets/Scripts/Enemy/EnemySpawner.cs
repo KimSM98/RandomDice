@@ -67,7 +67,7 @@ public class EnemySpawner : MonoBehaviour
 
     IEnumerator BossSpawing()
     {
-        List<Enemy> enemies = GetComponent<EnemyManager>().GetEnemies();
+        List<Enemy> enemies = GetComponent<EnemyTargeter>().GetEnemies();
 
         // Enemy gathering animation
         yield return StartCoroutine(GatheringEnemies(enemies));
@@ -139,7 +139,7 @@ public class EnemySpawner : MonoBehaviour
     private void InitEnemyByType(Enemy enemyToInit, EnemyStatus statusType, MonsterType[] Monstertypes)
     {
         enemyToInit.Init(statusType, RandomMonsterType(Monstertypes), startRoad, targetPlayerStatus);
-        GetComponent<EnemyManager>().InitEnemyByEnemyManager(enemyToInit);
+        GetComponent<EnemyTargeter>().RegisterEnemyToList(enemyToInit);
     }
 
     private MonsterType RandomMonsterType(MonsterType[] types) 

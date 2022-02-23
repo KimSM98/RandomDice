@@ -7,7 +7,7 @@ public class DiceManager : MonoBehaviour
     #region Components
     private DiceSpawner diceSpawner;
     private DiceSpawnPosition spawnPos;
-    private EnemyManager enemyManager;
+    private EnemyTargeter enemyManager;
     private PlayerStatus playerStatus;
     #endregion
 
@@ -24,7 +24,7 @@ public class DiceManager : MonoBehaviour
         diceSpawner = GetComponent<DiceSpawner>();
         spawnPos = diceSpawner.diceSpawnPos;
 
-        enemyManager = transform.parent.GetComponentInChildren<EnemyManager>();
+        enemyManager = transform.parent.GetComponentInChildren<EnemyTargeter>();
         playerStatus = GetComponentInParent<PlayerStatus>();
 
     }
