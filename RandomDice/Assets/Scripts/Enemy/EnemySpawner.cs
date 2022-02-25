@@ -7,13 +7,14 @@ public class EnemySpawner : MonoBehaviour
     [Header("Enemy spawing")]
     public EnemyStatus enemyBaseStatus; // 향후 이것으로 모든 Enemy의 스탯 변경. GameManage로 가도 될 듯
     public MonsterType[] monsterTypes;
-
+    
     [Header("Boss spawing")]
     public EnemyStatus bossStatus;
     public MonsterType[] bossTypes;
     public GameObject gatheringPosObject;
     private Vector2 gatheringPos;
 
+    // Spawning
     private bool isSpawning = false;
     [SerializeField]
     private float spawnDelay = 1f;
@@ -31,7 +32,7 @@ public class EnemySpawner : MonoBehaviour
 
         startRoad = GetComponent<EnemyRoad>().GetRoad(0);
         targetPlayerStatus = GetComponentInParent<PlayerStatus>();
-
+        
         spawnPos = startRoad.transform.position;
         gatheringPos = gatheringPosObject.transform.position;
     }
@@ -67,16 +68,17 @@ public class EnemySpawner : MonoBehaviour
 
     IEnumerator BossSpawing()
     {
-        List<Enemy> enemies = GetComponent<EnemyTargeter>().GetEnemies();
+        List<Enemy> enemies = GetComponent<EnemyTargeter>().GetActiveEnemies();
+
+        totalHPOfEnemies = CalculateTotalHPOfEnemies(enemies);
 
         // Enemy gathering animation
         yield return StartCoroutine(GatheringEnemies(enemies));
-        totalHPOfEnemies = CalculateTotalHPOfEnemies(enemies);
 
         // 게임 상의 Enemy 비활성화
         DeactivateAllEnemiesInList(enemies);
 
-        yield return StartCoroutine(SpawnBoss());
+        StartCoroutine(SpawnBoss());
     }
 
     private IEnumerator SpawnBoss()
@@ -85,17 +87,17 @@ public class EnemySpawner : MonoBehaviour
         InitEnemyByType(boss, bossStatus, bossTypes);
         boss.AddHP(totalHPOfEnemies); // Additional HP of Boss
         boss.SetIsBossEnemy(true);
-        boss.SetIsMove(false);
+        boss.SetMoving(false);
 
         // Entry to GameManager
         GameManager.instance.AddBoss(boss);
 
-        // 잠깐 멈춤
-        yield return new WaitForSeconds(0.3f);
+        // 보스가 Gathering 위치에 생성된 것을 보여주기 위해 잠깐 멈춘다.
+        yield return new WaitForSeconds(0.3f); 
 
         yield return StartCoroutine(LerpMovement(boss.gameObject, spawnPos, 1.5f));
-
-        boss.SetIsMove(true);
+        
+        boss.SetMoving(true);
     } 
     #endregion
 
@@ -116,7 +118,7 @@ public class EnemySpawner : MonoBehaviour
     {
         foreach (Enemy enemy in enemyList)
         {
-            enemy.SetIsMove(false);
+            enemy.SetMoving(false);
         }
 
         float t = 0f;
@@ -163,6 +165,7 @@ public class EnemySpawner : MonoBehaviour
         Enemy enemy = enemyObj.GetComponent<Enemy>();
         return enemy;
     }
+
     private float CalculateTotalHPOfEnemies(List<Enemy> enemyList)
     {
         float totalHP = 0f;
@@ -183,5 +186,4 @@ public class EnemySpawner : MonoBehaviour
             enemyList[0].DeactivateEnemy(); // List에서 제거되기 때문에 계속 0번에 접근한다.
         }
     }
-
 }

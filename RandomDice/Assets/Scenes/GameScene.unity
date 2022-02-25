@@ -623,6 +623,8 @@ GameObject:
   - component: {fileID: 375620161}
   - component: {fileID: 375620163}
   - component: {fileID: 375620162}
+  - component: {fileID: 375620165}
+  - component: {fileID: 375620164}
   m_Layer: 5
   m_Name: TimerText (TMP)
   m_TagString: Untagged
@@ -695,8 +697,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
-  m_fontSizeBase: 50
+  m_fontSize: 55
+  m_fontSizeBase: 55
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -745,6 +747,31 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 375620160}
   m_CullTransparentMesh: 0
+--- !u!114 &375620164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375620160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff832df5f1dedcd43a8e8bc994eadea1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TMPText: {fileID: 375620162}
+--- !u!114 &375620165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375620160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26c1dabc8adc1d9499c7cadf91062b6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &415552702
 GameObject:
   m_ObjectHideFlags: 0
@@ -1365,7 +1392,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26c1dabc8adc1d9499c7cadf91062b6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timerText: {fileID: 375620162}
 --- !u!114 &792023328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1383,7 +1409,9 @@ MonoBehaviour:
   playerStatuses: []
   diceManagers: []
   bosses: []
+  timerText: {fileID: 375620162}
   bossSpawnTime: 5
+  timerDisplay: {fileID: 375620165}
 --- !u!4 &792023329
 Transform:
   m_ObjectHideFlags: 0
@@ -2080,7 +2108,7 @@ Transform:
   - {fileID: 1682357357}
   - {fileID: 1701891627}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1265985998
 MonoBehaviour:
@@ -2627,7 +2655,7 @@ RectTransform:
   - {fileID: 697790995}
   - {fileID: 375620161}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -22,9 +23,9 @@ public class GameManager : MonoBehaviour
     private List<Enemy> bosses;
 
     [Header("Boss Spawn Timer")]
+    public TimerDisplay timerDisplay;
     [SerializeField]
     private int bossSpawnTime = 20;
-    private TimerDisplay timerDisplay;
 
     #region Unity Methods
     private void Awake()
@@ -50,7 +51,6 @@ public class GameManager : MonoBehaviour
     {
         StartCoroutine(GameLoop());
 
-        timerDisplay = GetComponent<TimerDisplay>();
         timerDisplay.SetTimeToCount((int)bossSpawnTime);
     }
 
@@ -103,10 +103,13 @@ public class GameManager : MonoBehaviour
         StopDiceAttack();
         DeactivateEnemySpawn();
 
+        // 이미 발사된 총알이 남아 있는 경우를 방지하기 위해 텀을 주고 보스를 생성한다.
+        // 보스를 생성하는 과정에도 총알이 타겟을 쫓아가는 경우를 방지하기 위함이다.
         yield return new WaitForSeconds(0.5f);
-        
+
         SpawnBoss();
-        yield return WaitBossSpawing();
+        // 보스가 완전히 생성될 때까지 기다린다.
+        yield return WaitBossSpawing(); 
         
         StartDiceAttack();
 
@@ -118,6 +121,7 @@ public class GameManager : MonoBehaviour
         // End of boss raid
         ActiveEnemySpawn();
     }
+    
     private void SpawnBoss()
     {
         foreach (EnemySpawner spawner in enemySpawners)
@@ -128,6 +132,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator WaitBossSpawing()
     {
+        // 플레이어 수만큼 보스가 생성될 때까지 기다린다.
         while (bosses.Count < playerStatuses.Count)
         {
             yield return null;
@@ -142,7 +147,7 @@ public class GameManager : MonoBehaviour
     } 
     #endregion
 
-    #region Enemy Spawn Activation
+    #region Enemy Spawn Control
     private void ActiveEnemySpawn()
     {
         foreach (EnemySpawner spawner in enemySpawners)
@@ -228,6 +233,7 @@ public class GameManager : MonoBehaviour
             manager.ActiveAttack(false);
             manager.ResetAllDiceTarget();
         }
-    } 
+    }
     #endregion
+
 }

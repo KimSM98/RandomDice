@@ -20,9 +20,8 @@ public class EnemyTargeter : MonoBehaviour
         UpdateLeadingEnemy();
         UpdateMostHpEnemy();
     }
-    // dddd
-    #region Setter/Getter
 
+    #region Get Enemy Target
     public Enemy GetLeadingTarget()
     {
         return leadingEnemy;
@@ -40,12 +39,8 @@ public class EnemyTargeter : MonoBehaviour
         int enemyNum = Random.Range(0, activeEnemies.Count);
         return activeEnemies[enemyNum];
     }
-
-    public List<Enemy> GetEnemies()
-    {
-        return activeEnemies;
-    }
     #endregion
+
 
     #region UpdateTarget
     private void UpdateLeadingEnemy()
@@ -74,9 +69,14 @@ public class EnemyTargeter : MonoBehaviour
             mostHPEnemy = e;
             mostHP = eHP;
         }
-    } 
+    }
     #endregion
 
+    #region List Methods
+    public List<Enemy> GetActiveEnemies()
+    {
+        return activeEnemies;
+    }
     public void RemoveFromList(Enemy enemy)
     {
         activeEnemies.Remove(enemy);
@@ -85,11 +85,12 @@ public class EnemyTargeter : MonoBehaviour
     {
         activeEnemies.Add(enemySpawned);
     }
-    
-    // Enemy가 마지막 Road에 도달하거나 죽었을 때 EnemyManager의 리스트에서 빼기 위한 것이다.
+
     public void RegisterEnemyToList(Enemy enemy)
     {
-        enemy.SetRegisteredList(this);
+        // Enemy의 역할이 끝났을 때 리스트에서 제거하기 위한 것이다.
+        enemy.SetRegisteredList(this); 
         AddEnemyToList(enemy);
-    }
+    } 
+    #endregion
 }

@@ -35,14 +35,14 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private Vector2 damageEffectOffset;
 
-    private bool isMove = true;
+    private bool isMoving = true;
     // Boss property
     [SerializeField]
     private bool isBossEnemy = false;
 
     private void Update()
     {
-        if(isMove)
+        if(isMoving)
             MoveToNextRoad();
     }
 
@@ -52,7 +52,7 @@ public class Enemy : MonoBehaviour
         hp = 0f;
         t = 0f;
         isDead = false;
-        isMove = true;
+        isMoving = true;
         InitDistance();
 
         InitStatus(status);
@@ -99,9 +99,9 @@ public class Enemy : MonoBehaviour
 
     #endregion
     
-    public void AddHP(float val)
+    public void AddHP(float hpAmount)
     {
-        hp += val;
+        hp += hpAmount;
         UpdateHPText();
     }
 
@@ -111,9 +111,9 @@ public class Enemy : MonoBehaviour
     }
 
     #region Setter/Getter
-    public void SetIsMove(bool val)
+    public void SetMoving(bool movingCondition)
     {
-        isMove = val;
+        isMoving = movingCondition;
     }
 
     // Enemy가 비활성화되면 EnemyTargeter 리스트에서 지우기 위해서 설정
@@ -205,7 +205,7 @@ public class Enemy : MonoBehaviour
             isBossEnemy = false;
         }
 
-        isMove = false;
+        isMoving = false;
 
         gameObject.SetActive(false);
     }
