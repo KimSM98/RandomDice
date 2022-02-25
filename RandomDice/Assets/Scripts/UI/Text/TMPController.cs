@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
-using System.Text;
 
 public class TMPController : MonoBehaviour, ITextSetter
 {

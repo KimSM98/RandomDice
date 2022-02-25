@@ -1372,7 +1372,6 @@ GameObject:
   m_Component:
   - component: {fileID: 792023329}
   - component: {fileID: 792023328}
-  - component: {fileID: 792023327}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1380,18 +1379,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &792023327
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 792023326}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26c1dabc8adc1d9499c7cadf91062b6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &792023328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1409,9 +1396,8 @@ MonoBehaviour:
   playerStatuses: []
   diceManagers: []
   bosses: []
-  timerText: {fileID: 375620162}
-  bossSpawnTime: 5
   timerDisplay: {fileID: 375620165}
+  bossSpawnTime: 61
 --- !u!4 &792023329
 Transform:
   m_ObjectHideFlags: 0

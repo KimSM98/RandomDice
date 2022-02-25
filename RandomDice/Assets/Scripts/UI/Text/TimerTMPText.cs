@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class TimerTMPText : TMPController
+﻿public class TimerTMPText : TMPController
 {
     private void Start()
     {
