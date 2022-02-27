@@ -278,4 +278,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageText: {fileID: 8385691133335713973}
-  displayDuration: 0.1
+  pulseScale: {x: 1.2, y: 1.2, z: 1}
+  pulseDuration: 1
