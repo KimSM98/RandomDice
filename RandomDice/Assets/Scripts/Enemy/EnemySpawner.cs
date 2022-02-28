@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Animation.Effects;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -13,18 +14,15 @@ public class EnemySpawner : MonoBehaviour
     public MonsterType[] bossTypes;
     public GameObject gatheringPosObject;
     private Vector2 gatheringPos;
+    float totalHPOfEnemies = 0f;
 
     // Spawning
     private bool isSpawning = false;
     [SerializeField]
     private float spawnDelay = 1f;
     private Vector2 spawnPos;
-
     private Road startRoad;
-    
     private PlayerStatus targetPlayerStatus;
-
-    float totalHPOfEnemies = 0f;
 
     private void Start()
     {
@@ -57,6 +55,8 @@ public class EnemySpawner : MonoBehaviour
     {
         Enemy enemy = GetEnemyObjectFromPool(spawnPos);
         InitEnemyByType(enemy, enemyBaseStatus, monsterTypes);
+        
+        enemy.MoveToNextRoad();
     } 
     #endregion
 
@@ -93,47 +93,39 @@ public class EnemySpawner : MonoBehaviour
         GameManager.instance.AddBoss(boss);
 
         // 보스가 Gathering 위치에 생성된 것을 보여주기 위해 잠깐 멈춘다.
-        yield return new WaitForSeconds(0.3f); 
+        yield return new WaitForSeconds(0.3f);
 
-        yield return StartCoroutine(LerpMovement(boss.gameObject, spawnPos, 1.5f));
-        
-        boss.SetMoving(true);
+        // *****
+        LerpMovement bossMovement = boss.GetComponent<LerpMovement>();
+        yield return StartCoroutine(bossMovement.AcceleratedMotion(spawnPos, 1.5f));
+        boss.MoveToNextRoad();
+        // *****
+
     } 
     #endregion
 
-    #region Movement
-    IEnumerator LerpMovement(GameObject obj, Vector2 moveTo, float lerpDuration)
-    {
-        float t = 0f;
-
-        while (t / lerpDuration < 1f)
-        {
-            t += Time.deltaTime;
-
-            obj.transform.position = Vector2.Lerp(obj.transform.position, moveTo, t / lerpDuration);
-            yield return null;
-        }
-    }
+    #region Animation Effect
     IEnumerator GatheringEnemies(List<Enemy> enemyList)
     {
+        List<GameObject> enemyObjList = new List<GameObject>();
         foreach (Enemy enemy in enemyList)
         {
             enemy.SetMoving(false);
+            enemyObjList.Add(enemy.gameObject);
         }
 
-        float t = 0f;
-        float lerpDuration = 1.25f;
-        while (t / lerpDuration < 1f)
+        yield return StartCoroutine(AnimationEffect.GatheringObjects(enemyObjList, gatheringPos, 1.25f));
+    }
+    private float CalculateTotalHPOfEnemies(List<Enemy> enemyList)
+    {
+        float totalHP = 0f;
+
+        foreach (Enemy enemy in enemyList)//이거 빼기
         {
-            t += Time.deltaTime;
-
-            foreach (Enemy enemy in enemyList)
-            {
-                enemy.transform.position = Vector3.Lerp(enemy.transform.position, gatheringPos, t / lerpDuration);
-            }
-
-            yield return null;
+            totalHP += enemy.GetHP();
         }
+
+        return totalHP;
     }
     #endregion
 
@@ -164,18 +156,6 @@ public class EnemySpawner : MonoBehaviour
         GameObject enemyObj = ObjectPool.instance.GetObject("Enemy", pos);
         Enemy enemy = enemyObj.GetComponent<Enemy>();
         return enemy;
-    }
-
-    private float CalculateTotalHPOfEnemies(List<Enemy> enemyList)
-    {
-        float totalHP = 0f;
-
-        foreach (Enemy enemy in enemyList)//이거 빼기
-        {
-            totalHP += enemy.GetHP();
-        }
-
-        return totalHP;
     }
 
     private void DeactivateAllEnemiesInList(List<Enemy> enemyList)

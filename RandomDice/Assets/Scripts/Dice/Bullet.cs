@@ -10,16 +10,17 @@ public class Bullet : MonoBehaviour
     private float moveSpeed = 1f;
 
     private SpriteRenderer sprRenderer;
-    private BulletAnimation bulletAnimation;
+    private AnimationPlayer animPlayer;
 
     private bool isShooting = false;
     private Vector2 startPos;
     private float t;
 
+    // 외부에서 Init하기 때문에 Awake를 사용한다.
     private void Awake()
     {
         sprRenderer = GetComponent<SpriteRenderer>();
-        bulletAnimation = GetComponent<BulletAnimation>();
+        animPlayer = GetComponent<AnimationPlayer>();
     }
 
     private void Update()
@@ -51,7 +52,6 @@ public class Bullet : MonoBehaviour
         Vector2 destination = target.transform.position;
         transform.position = Vector2.Lerp(startPos, destination, t);
 
-        
         if (t >= 1f || target.IsDead())
         {
             BulletExplosion();
@@ -76,21 +76,16 @@ public class Bullet : MonoBehaviour
 
     private IEnumerator ExplosionAnim()
     {
-        //GameObject damageObj = ObjectPool.instance.GetObject("DamageEffect", transform.position);
-        //DamageEffect damageEffect = damageObj.GetComponent<DamageEffect>();
-        //damageEffect.DisplayDamage(type.attackPower);
-
-        yield return StartCoroutine(bulletAnimation.PlayExplosionAnim());
+        yield return StartCoroutine(animPlayer.PlayAnimation());
         
         ResetBullet();
     }
     #endregion
 
-
     private void ResetBullet()
     {
         gameObject.SetActive(false);
-        bulletAnimation.InitSprite();
+        animPlayer.InitSprite();
         ObjectPool.instance.ReturnToPool("Bullet", this.gameObject);
     }
 

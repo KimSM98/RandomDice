@@ -5,12 +5,12 @@ using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
-    public Canvas canvas;
     public Text hpText;
 
     #region Status with MonsterType
     private float hp;
     private float moveSpeed;
+    [SerializeField]
     private int attackPower; // Player HP에 영향 
     #endregion
 
@@ -19,12 +19,12 @@ public class Enemy : MonoBehaviour
     private Road nextRoad;
     private float totalDistanceTraveled = 0f;
     private float distanceTraveled = 0f;
-    private float t; 
     #endregion
 
     #region Components
     private EnemyTargeter currentlyRegisteredList;
     private PlayerStatus playerStatus;
+    private LerpMovement movementComp;
     #endregion
 
     #region Dead 
@@ -40,31 +40,26 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private bool isBossEnemy = false;
 
-    private void Update()
-    {
-        if(isMoving)
-            MoveToNextRoad();
-    }
-
     #region Initialization
     public void Init(EnemyStatus status, MonsterType type, Road startRoad, PlayerStatus targetPlayer)
     {
         hp = 0f;
-        t = 0f;
         isDead = false;
-        isMoving = true;
-        InitDistance();
+        //InitDistance();
 
-        InitStatus(status);
+        InitBaseStatus(status);
         InitStatusByType(type);
+
         SetCurrentRoad(startRoad);
         SetTargetPlayerStatus(targetPlayer);
 
-        InitCanvas();
         UpdateHPText();
+
+        movementComp = GetComponent<LerpMovement>();
+        //StartMovement();
     }
 
-    private void InitStatus(EnemyStatus status)
+    private void InitBaseStatus(EnemyStatus status)
     {
         hp = status.hp;
         moveSpeed = status.moveSpeed;
@@ -84,19 +79,11 @@ public class Enemy : MonoBehaviour
         GetComponent<SpriteRenderer>().sprite = spr;
     }
 
-
     private void InitDistance()
     {
         totalDistanceTraveled = 0f;
         distanceTraveled = 0f;
     }
-
-    public void InitCanvas()
-    {
-        RectTransform canvasTransform = canvas.GetComponent<RectTransform>();
-        canvasTransform.position = transform.position;
-    }
-
     #endregion
     
     public void AddHP(float hpAmount)
@@ -114,6 +101,9 @@ public class Enemy : MonoBehaviour
     public void SetMoving(bool movingCondition)
     {
         isMoving = movingCondition;
+
+        if (movementComp != null) 
+            movementComp.SetMoving(movingCondition);
     }
 
     // Enemy가 비활성화되면 EnemyTargeter 리스트에서 지우기 위해서 설정
@@ -165,33 +155,52 @@ public class Enemy : MonoBehaviour
     #region Movement
     public void MoveToNextRoad()
     {
-        if (nextRoad == null) // 끝에 도달 또는 Road가 세팅되지 않음
+        SetMoving(true);
+
+        StartCoroutine(TrackDistanceCoroutine());
+        StartCoroutine(MoveToNextRoadCoroutine());
+    }
+
+    private IEnumerator MoveToNextRoadCoroutine()
+    {
+        while(nextRoad != null && isMoving)
         {
+            Vector2 nextPos = currentRoad.GetNextRoad().transform.position;
+            float distanceBetweenRoads = Vector2.Distance(currentRoad.transform.position, nextPos);
+            float ratioOfDistance = moveSpeed / distanceBetweenRoads;
+
+            yield return StartCoroutine(movementComp.UniformMotion(currentRoad.transform.position, nextPos, 1f, ratioOfDistance));
+
+            AddTotalDistance();
+            SetCurrentRoad(currentRoad.GetNextRoad());
+        }
+
+        // Reached to end point
+        if(nextRoad == null)
+        {
+            isMoving = false;
             isDead = true;
             playerStatus.TakeDamage(attackPower);
             DeactivateEnemy();
-            return;
         }
+    }
 
-        Vector2 nextPos = currentRoad.GetNextRoad().transform.position;
+    private IEnumerator TrackDistanceCoroutine()
+    {
+        InitDistance();
 
-        // Road 길이에 따라 비율 조정
-        float distance = Vector2.Distance(currentRoad.transform.position, nextPos);
-        float ratioOfDistance = moveSpeed / distance;
-        t += ratioOfDistance * Time.deltaTime;
-
-        transform.position = Vector2.Lerp(currentRoad.transform.position, nextPos, t);
-
-        // 이동한 거리 업데이트
-        distanceTraveled = Vector2.Distance(currentRoad.transform.position, this.transform.position);
-
-        if (t >= 1f)
+        while(isMoving)
         {
-            t = 0f;
-            AddTotalDistance();
+            TrackDistance();
 
-            SetCurrentRoad(currentRoad.GetNextRoad());
+            yield return null;
         }
+    }
+
+    private void TrackDistance()
+    {
+        if (currentRoad == null) return;
+        distanceTraveled = Vector2.Distance(currentRoad.transform.position, this.transform.position);
     }
 
     public void DeactivateEnemy()

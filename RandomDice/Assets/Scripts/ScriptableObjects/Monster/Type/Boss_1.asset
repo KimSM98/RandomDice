@@ -15,4 +15,4 @@ MonoBehaviour:
   sprite: {fileID: 21300000, guid: 4d095f29d94e5334e9a97f0e81f3c96b, type: 3}
   HpMult: 1
   moveSpeedMult: 1
-  attackPowerMult: 2
+  attackPowerMult: 1

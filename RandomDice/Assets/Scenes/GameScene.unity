@@ -1397,7 +1397,7 @@ MonoBehaviour:
   diceManagers: []
   bosses: []
   timerDisplay: {fileID: 375620165}
-  bossSpawnTime: 61
+  bossSpawnTime: 5
 --- !u!4 &792023329
 Transform:
   m_ObjectHideFlags: 0

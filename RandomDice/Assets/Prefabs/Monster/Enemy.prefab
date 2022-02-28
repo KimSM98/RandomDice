@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: 7720729129707872831}
   - component: {fileID: 7720729129707872816}
   - component: {fileID: 6373812405555608833}
+  - component: {fileID: 8626081131525820224}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -177,6 +178,18 @@ MonoBehaviour:
   hpText: {fileID: 7720729129232313382}
   damageEffectOffset: {x: 0, y: 0.35}
   isBossEnemy: 0
+--- !u!114 &8626081131525820224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7720729129707872829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 774bc06cb3a4bd940907b6826370e64d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7720729129959147696
 GameObject:
   m_ObjectHideFlags: 0
