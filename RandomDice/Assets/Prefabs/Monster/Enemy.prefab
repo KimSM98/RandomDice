@@ -89,7 +89,8 @@ GameObject:
   - component: {fileID: 7720729129707872831}
   - component: {fileID: 7720729129707872816}
   - component: {fileID: 6373812405555608833}
-  - component: {fileID: 8626081131525820224}
+  - component: {fileID: 5085149688584258864}
+  - component: {fileID: 4004604302379981408}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -174,11 +175,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 029cdbe9c02c76340bc3867785075151, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 7720729129959147700}
   hpText: {fileID: 7720729129232313382}
+  attackPower: 0
   damageEffectOffset: {x: 0, y: 0.35}
   isBossEnemy: 0
---- !u!114 &8626081131525820224
+--- !u!114 &5085149688584258864
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -187,7 +188,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 7720729129707872829}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 774bc06cb3a4bd940907b6826370e64d, type: 3}
+  m_Script: {fileID: 11500000, guid: 985a25e6391a458419a00f1ffd89b0a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentPoint: {fileID: 0}
+  nextPoint: {fileID: 0}
+--- !u!114 &4004604302379981408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7720729129707872829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1a1e7a402c04f740b18cf3684c3a946, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7720729129959147696

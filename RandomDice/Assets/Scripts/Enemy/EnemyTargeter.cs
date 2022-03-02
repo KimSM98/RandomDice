@@ -5,7 +5,9 @@ using UnityEngine;
 public class EnemyTargeter : MonoBehaviour
 {    
     private List<Enemy> activeEnemies;
+    [SerializeField]
     private Enemy leadingEnemy;
+    [SerializeField]
     private Enemy mostHPEnemy;
 
     private void Start()
@@ -41,14 +43,13 @@ public class EnemyTargeter : MonoBehaviour
     }
     #endregion
 
-
     #region UpdateTarget
     private void UpdateLeadingEnemy()
     {
         float leadingDist = 0f;
         foreach (Enemy e in activeEnemies)
         {
-            float eDist = e.GetCurrentDistanceTraveled();
+            float eDist = e.GetDistanceTraveled();
 
             if (leadingDist > eDist) continue;
 

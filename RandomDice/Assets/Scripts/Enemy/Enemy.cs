@@ -14,49 +14,49 @@ public class Enemy : MonoBehaviour
     private int attackPower; // Player HP에 영향 
     #endregion
 
-    #region Movement
-    private Road currentRoad;
-    private Road nextRoad;
-    private float totalDistanceTraveled = 0f;
-    private float distanceTraveled = 0f;
-    #endregion
-
     #region Components
     private EnemyTargeter currentlyRegisteredList;
     private PlayerStatus playerStatus;
-    private LerpMovement movementComp;
+
+    private WaypointFollower waypointFollower;
+    private MovingDistanceTracker distanceTracker;
+    private SpriteRenderer spriteRenderer;
     #endregion
 
     #region Dead 
     private bool isDead;
-    private Vector2 deadPos;
     #endregion
 
     [SerializeField]
     private Vector2 damageEffectOffset;
 
-    private bool isMoving = true;
     // Boss property
     [SerializeField]
     private bool isBossEnemy = false;
 
+    private void Awake()
+    {
+        distanceTracker = GetComponent<MovingDistanceTracker>();
+        waypointFollower = GetComponent<WaypointFollower>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
     #region Initialization
-    public void Init(EnemyStatus status, MonsterType type, Road startRoad, PlayerStatus targetPlayer)
+    public void Init(EnemyStatus status, MonsterType type, Waypoint startWaypoint, PlayerStatus targetPlayer)
     {
         hp = 0f;
         isDead = false;
-        //InitDistance();
 
+        // Stats
         InitBaseStatus(status);
         InitStatusByType(type);
+        InitSpriteByType(type.sprite);
 
-        SetCurrentRoad(startRoad);
+        // Movement
+        SetCurrentWaypoint(startWaypoint);
         SetTargetPlayerStatus(targetPlayer);
 
         UpdateHPText();
-
-        movementComp = GetComponent<LerpMovement>();
-        //StartMovement();
     }
 
     private void InitBaseStatus(EnemyStatus status)
@@ -66,23 +66,18 @@ public class Enemy : MonoBehaviour
         attackPower = status.attackPower;
     }
 
+    // Monster Type마다 스탯 가중치를 준다.
     private void InitStatusByType(MonsterType type)
     {
-        InitSprite(type.sprite);
         hp *= type.HpMult;
         moveSpeed *= type.moveSpeedMult;
         attackPower *= type.attackPowerMult;
     }
 
-    private void InitSprite(Sprite spr)
+    private void InitSpriteByType(Sprite spr)
     {
-        GetComponent<SpriteRenderer>().sprite = spr;
-    }
-
-    private void InitDistance()
-    {
-        totalDistanceTraveled = 0f;
-        distanceTraveled = 0f;
+        //GetComponent<SpriteRenderer>().sprite = spr;
+        spriteRenderer.sprite = spr;
     }
     #endregion
     
@@ -100,10 +95,10 @@ public class Enemy : MonoBehaviour
     #region Setter/Getter
     public void SetMoving(bool movingCondition)
     {
-        isMoving = movingCondition;
+        if (waypointFollower != null)
+            waypointFollower.SetMoving(movingCondition);
 
-        if (movementComp != null) 
-            movementComp.SetMoving(movingCondition);
+        distanceTracker.SetRunningCondition(false);
     }
 
     // Enemy가 비활성화되면 EnemyTargeter 리스트에서 지우기 위해서 설정
@@ -120,10 +115,9 @@ public class Enemy : MonoBehaviour
         playerStatus = status;
     }
 
-    public void SetCurrentRoad(Road road)
+    private void SetCurrentWaypoint(Waypoint wp)
     {
-        currentRoad = road;
-        nextRoad = currentRoad.GetNextRoad();
+        waypointFollower.SetCurrentPoint(wp);
     }
 
     public void SetIsBossEnemy(bool val)
@@ -131,19 +125,14 @@ public class Enemy : MonoBehaviour
         isBossEnemy = val;
     }
 
-    public float GetCurrentDistanceTraveled()
+    public float GetDistanceTraveled()
     {
-        return totalDistanceTraveled + distanceTraveled;
+        return distanceTracker.GetCurrentDistancePassed();
     } 
 
     public float GetHP()
     {
         return hp;
-    }
-
-    public Vector2 GetDeadPos()
-    {
-        return deadPos;
     }
 
     public bool IsDead()
@@ -153,58 +142,39 @@ public class Enemy : MonoBehaviour
     #endregion
 
     #region Movement
-    public void MoveToNextRoad()
+    public void StartMoving()
+    {
+        StartCoroutine(Move());
+    }
+
+    private IEnumerator Move()
     {
         SetMoving(true);
 
-        StartCoroutine(TrackDistanceCoroutine());
-        StartCoroutine(MoveToNextRoadCoroutine());
-    }
-
-    private IEnumerator MoveToNextRoadCoroutine()
-    {
-        while(nextRoad != null && isMoving)
+        distanceTracker.StartTrackingFromPoint();
+        
+        while (waypointFollower.GetNextPoint() != null)
         {
-            Vector2 nextPos = currentRoad.GetNextRoad().transform.position;
-            float distanceBetweenRoads = Vector2.Distance(currentRoad.transform.position, nextPos);
-            float ratioOfDistance = moveSpeed / distanceBetweenRoads;
+            Vector2 startPoint = waypointFollower.GetCurrentPoint().transform.position;
+            distanceTracker.SetStartintPoint(startPoint);
 
-            yield return StartCoroutine(movementComp.UniformMotion(currentRoad.transform.position, nextPos, 1f, ratioOfDistance));
-
-            AddTotalDistance();
-            SetCurrentRoad(currentRoad.GetNextRoad());
+            yield return StartCoroutine(waypointFollower.MoveToNextPoint(moveSpeed));
+            // Track distance
+            distanceTracker.SaveDistancePassed();
         }
 
-        // Reached to end point
-        if(nextRoad == null)
+        if (waypointFollower.GetNextPoint() == null)
         {
-            isMoving = false;
-            isDead = true;
+            isDead = true; // 이름 바꿀 것
             playerStatus.TakeDamage(attackPower);
             DeactivateEnemy();
         }
     }
 
-    private IEnumerator TrackDistanceCoroutine()
-    {
-        InitDistance();
-
-        while(isMoving)
-        {
-            TrackDistance();
-
-            yield return null;
-        }
-    }
-
-    private void TrackDistance()
-    {
-        if (currentRoad == null) return;
-        distanceTraveled = Vector2.Distance(currentRoad.transform.position, this.transform.position);
-    }
-
     public void DeactivateEnemy()
     {
+        SetMoving(false);
+
         currentlyRegisteredList.RemoveFromList(this);
         ObjectPool.instance.ReturnToPool("Enemy", this.gameObject);
         
@@ -214,16 +184,12 @@ public class Enemy : MonoBehaviour
             isBossEnemy = false;
         }
 
-        isMoving = false;
+
+        distanceTracker.ResetDistance();
 
         gameObject.SetActive(false);
     }
 
-    private void AddTotalDistance()
-    {
-        totalDistanceTraveled += distanceTraveled;
-        distanceTraveled = 0f;
-    }
     #endregion
 
     #region Damage
@@ -235,7 +201,6 @@ public class Enemy : MonoBehaviour
         if (hp <= 0)
         {
             isDead = true;
-            deadPos = transform.position;
             DeactivateEnemy();
 
             playerStatus.AddSp(10);

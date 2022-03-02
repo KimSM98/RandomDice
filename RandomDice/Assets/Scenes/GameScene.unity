@@ -453,7 +453,7 @@ PrefabInstance:
     - target: {fileID: 7899150895075925516, guid: edbd0428cbe876b46bfb078d90870402,
         type: 3}
       propertyPath: m_Name
-      value: Road (3)
+      value: Waypoint (3)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: edbd0428cbe876b46bfb078d90870402, type: 3}
@@ -962,7 +962,7 @@ PrefabInstance:
     - target: {fileID: 7899150895075925516, guid: edbd0428cbe876b46bfb078d90870402,
         type: 3}
       propertyPath: m_Name
-      value: Road (2)
+      value: Waypoint (2)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: edbd0428cbe876b46bfb078d90870402, type: 3}
@@ -1397,7 +1397,7 @@ MonoBehaviour:
   diceManagers: []
   bosses: []
   timerDisplay: {fileID: 375620165}
-  bossSpawnTime: 5
+  bossSpawnTime: 30
 --- !u!4 &792023329
 Transform:
   m_ObjectHideFlags: 0
@@ -1543,7 +1543,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b11c5c065be294a41b7710a35d7a1d03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roads:
+  waypoints:
   - {fileID: 6707148685696101803}
   - {fileID: 1599399111}
   - {fileID: 553238256}
@@ -2898,7 +2898,7 @@ PrefabInstance:
     - target: {fileID: 7899150895075925516, guid: edbd0428cbe876b46bfb078d90870402,
         type: 3}
       propertyPath: m_Name
-      value: Road (1)
+      value: Waypoint (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: edbd0428cbe876b46bfb078d90870402, type: 3}
@@ -3433,7 +3433,7 @@ PrefabInstance:
     - target: {fileID: 7899150895075925516, guid: edbd0428cbe876b46bfb078d90870402,
         type: 3}
       propertyPath: m_Name
-      value: Road
+      value: Waypoint
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: edbd0428cbe876b46bfb078d90870402, type: 3}

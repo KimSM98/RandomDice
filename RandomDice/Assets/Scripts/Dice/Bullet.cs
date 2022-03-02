@@ -11,54 +11,74 @@ public class Bullet : MonoBehaviour
 
     private SpriteRenderer sprRenderer;
     private AnimationPlayer animPlayer;
+    private LerpMovement lerpMovement;
 
     private bool isShooting = false;
-    private Vector2 startPos;
-    private float t;
 
     // 외부에서 Init하기 때문에 Awake를 사용한다.
     private void Awake()
     {
         sprRenderer = GetComponent<SpriteRenderer>();
         animPlayer = GetComponent<AnimationPlayer>();
+
+        lerpMovement = GetComponent<LerpMovement>();
+        lerpMovement.SetMovementType(LerpMovement.MovementType.UniformMotion);
+        //lerpMovement.UseRatioOfDistanceToSpeedWeight();
     }
 
-    private void Update()
-    {
-        if (isShooting)
-        {
-            Move();
-        }
-    }
 
     public void Init(Enemy _target, DiceType _type)
     {
         isShooting = true;
-        startPos = transform.position;
-        t = 0f;
 
         target = _target;
 
         type = _type;
         sprRenderer.color = type.diceEyeColor;
+
+        StartMoving();
     }
 
-    private void Move()
+    private void StartMoving()
     {
-        float dist = Vector2.Distance(startPos, target.transform.position);
-        float ratioOfDist = moveSpeed / dist;
-        t += ratioOfDist * Time.deltaTime;
+        //float dist = Vector2.Distance(startPos, target.transform.position);
+        //float ratioOfDist = moveSpeed / dist;
+        //t += ratioOfDist * Time.deltaTime;
 
-        Vector2 destination = target.transform.position;
-        transform.position = Vector2.Lerp(startPos, destination, t);
+        //Vector2 destination = target.transform.position;
+        //transform.position = Vector2.Lerp(startPos, destination, t);
 
-        if (t >= 1f || target.IsDead())
-        {
-            BulletExplosion();
-        }
+        //if (t >= 1f || target.IsDead())
+        //{
+        //    BulletExplosion();
+        //}
+        StartCoroutine(BulletExplosionChecker());
+        StartCoroutine(Move());
     }
+
+    IEnumerator Move()
+    {
+        lerpMovement.SetMoving(true);
+
+        //yield return StartCoroutine(lerpMovement.UniformMotion(transform.position, target.transform.position, 1f, moveSpeed));
+        yield return StartCoroutine(lerpMovement.MoveLerp(target.transform, 1f, moveSpeed));
+
+        isShooting = false;
+    }
+
 
     #region Explosion
+    IEnumerator BulletExplosionChecker()
+    {
+        while(isShooting && !target.IsDead())
+        {
+            yield return null;
+        }
+
+        lerpMovement.SetMoving(false);
+        BulletExplosion();
+    }
+    
     private void BulletExplosion()
     {
         isShooting = false;

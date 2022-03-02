@@ -21,17 +21,17 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     private float spawnDelay = 1f;
     private Vector2 spawnPos;
-    private Road startRoad;
+    private Waypoint startWaypoint;
     private PlayerStatus targetPlayerStatus;
 
     private void Start()
     {
         GameManager.instance.AddEnemySpawner(this);
 
-        startRoad = GetComponent<EnemyRoad>().GetRoad(0);
+        startWaypoint = GetComponent<WaypointSystem>().GetWaypoint(0);
         targetPlayerStatus = GetComponentInParent<PlayerStatus>();
         
-        spawnPos = startRoad.transform.position;
+        spawnPos = startWaypoint.transform.position;
         gatheringPos = gatheringPosObject.transform.position;
     }
 
@@ -56,7 +56,7 @@ public class EnemySpawner : MonoBehaviour
         Enemy enemy = GetEnemyObjectFromPool(spawnPos);
         InitEnemyByType(enemy, enemyBaseStatus, monsterTypes);
         
-        enemy.MoveToNextRoad();
+        enemy.StartMoving();
     } 
     #endregion
 
@@ -97,8 +97,8 @@ public class EnemySpawner : MonoBehaviour
 
         // *****
         LerpMovement bossMovement = boss.GetComponent<LerpMovement>();
-        yield return StartCoroutine(bossMovement.AcceleratedMotion(spawnPos, 1.5f));
-        boss.MoveToNextRoad();
+        yield return StartCoroutine(bossMovement.DeceleratedMotion(spawnPos, 1.5f));
+        boss.StartMoving();
         // *****
 
     } 
@@ -132,7 +132,7 @@ public class EnemySpawner : MonoBehaviour
     #region Enemy Initialization
     private void InitEnemyByType(Enemy enemyToInit, EnemyStatus statusType, MonsterType[] Monstertypes)
     {
-        enemyToInit.Init(statusType, RandomMonsterType(Monstertypes), startRoad, targetPlayerStatus);
+        enemyToInit.Init(statusType, RandomMonsterType(Monstertypes), startWaypoint, targetPlayerStatus);
         GetComponent<EnemyTargeter>().RegisterEnemyToList(enemyToInit);
     }
 
