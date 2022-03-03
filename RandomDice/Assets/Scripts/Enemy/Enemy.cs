@@ -12,8 +12,9 @@ public class Enemy : MonoBehaviour
     private float moveSpeed;
     [SerializeField]
     private int attackPower; // Player HP에 영향 
+    
     #endregion
-
+    
     #region Components
     private EnemyTargeter currentlyRegisteredList;
     private PlayerStatus playerStatus;
@@ -22,10 +23,8 @@ public class Enemy : MonoBehaviour
     private MovingDistanceTracker distanceTracker;
     private SpriteRenderer spriteRenderer;
     #endregion
-
-    #region Dead 
+    
     private bool isDead;
-    #endregion
 
     [SerializeField]
     private Vector2 damageEffectOffset;
@@ -76,7 +75,6 @@ public class Enemy : MonoBehaviour
 
     private void InitSpriteByType(Sprite spr)
     {
-        //GetComponent<SpriteRenderer>().sprite = spr;
         spriteRenderer.sprite = spr;
     }
     #endregion
@@ -146,6 +144,7 @@ public class Enemy : MonoBehaviour
     {
         StartCoroutine(Move());
     }
+
     private IEnumerator Move()
     {
         SetMoving(true);
@@ -163,7 +162,7 @@ public class Enemy : MonoBehaviour
         }
 
         // 끝에 도달
-        if (waypointFollower.GetNextPoint() == null)
+        if (waypointFollower.GetMovementCondition())
         {
             isDead = true; // 이름 바꿀 것
             playerStatus.TakeDamage(attackPower);
@@ -171,6 +170,7 @@ public class Enemy : MonoBehaviour
         }
     }
     #endregion
+
     public void DeactivateEnemy()
     {
         SetMoving(false);

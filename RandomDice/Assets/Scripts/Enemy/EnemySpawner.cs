@@ -81,6 +81,30 @@ public class EnemySpawner : MonoBehaviour
         StartCoroutine(SpawnBoss());
     }
 
+    IEnumerator GatheringEnemies(List<Enemy> enemyList)
+    {
+        List<GameObject> enemyObjList = new List<GameObject>();
+        foreach (Enemy enemy in enemyList)
+        {
+            enemy.SetMoving(false);
+            enemyObjList.Add(enemy.gameObject);
+        }
+
+        yield return StartCoroutine(AnimationEffect.GatheringObjects(enemyObjList, gatheringPos, 1.25f));
+    }
+
+    private float CalculateTotalHPOfEnemies(List<Enemy> enemyList)
+    {
+        float totalHP = 0f;
+
+        foreach (Enemy enemy in enemyList)//이거 빼기
+        {
+            totalHP += enemy.GetHP();
+        }
+
+        return totalHP;
+    }
+
     private IEnumerator SpawnBoss()
     {
         Enemy boss = GetEnemyObjectFromPool(gatheringPos);
@@ -95,37 +119,13 @@ public class EnemySpawner : MonoBehaviour
         // 보스가 Gathering 위치에 생성된 것을 보여주기 위해 잠깐 멈춘다.
         yield return new WaitForSeconds(0.3f);
 
-        LerpMovement bossMovement = boss.GetComponent<LerpMovement>();
-        yield return StartCoroutine(bossMovement.MoveLerp(startWaypoint.transform, 1.5f)); // *****
+        yield return AnimationEffect.MoveTo(boss.transform, spawnPos, 1.5f);
 
         boss.StartMoving();
     } 
     #endregion
 
-    #region Animation Effect
-    IEnumerator GatheringEnemies(List<Enemy> enemyList)
-    {
-        List<GameObject> enemyObjList = new List<GameObject>();
-        foreach (Enemy enemy in enemyList)
-        {
-            enemy.SetMoving(false);
-            enemyObjList.Add(enemy.gameObject);
-        }
-
-        yield return StartCoroutine(AnimationEffect.GatheringObjects(enemyObjList, gatheringPos, 1.25f));
-    }
-    private float CalculateTotalHPOfEnemies(List<Enemy> enemyList)
-    {
-        float totalHP = 0f;
-
-        foreach (Enemy enemy in enemyList)//이거 빼기
-        {
-            totalHP += enemy.GetHP();
-        }
-
-        return totalHP;
-    }
-    #endregion
+    
 
     #region Enemy Initialization
     private void InitEnemyByType(Enemy enemyToInit, EnemyStatus statusType, MonsterType[] Monstertypes)
@@ -133,6 +133,7 @@ public class EnemySpawner : MonoBehaviour
         enemyToInit.Init(statusType, RandomMonsterType(Monstertypes), startWaypoint, targetPlayerStatus);
         GetComponent<EnemyTargeter>().RegisterEnemyToList(enemyToInit);
     }
+
     private MonsterType RandomMonsterType(MonsterType[] types) 
     {
         int randomType = Random.Range(0, types.Length);

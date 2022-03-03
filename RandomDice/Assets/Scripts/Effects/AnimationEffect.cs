@@ -8,6 +8,7 @@ namespace Animation.Effects
 {
     public class AnimationEffect
     {
+        #region Color
         public static IEnumerator FadeOut(SpriteRenderer rendererToApply, float duration = 1f)
         {
             float t = 0f;
@@ -15,7 +16,7 @@ namespace Animation.Effects
             while (t / duration < 1f)
             {
                 Color colorToChangeAlpha = rendererToApply.color;
-                
+
                 colorToChangeAlpha.a = Mathf.Lerp(1f, 0f, t / duration);
                 t += Time.deltaTime;
 
@@ -32,7 +33,7 @@ namespace Animation.Effects
             while (t / duration < 1f)
             {
                 Color colorToChangeAlpha = tmpColor.color;
-                
+
                 colorToChangeAlpha.a = Mathf.Lerp(1f, 0f, t / duration);
                 t += Time.deltaTime;
 
@@ -40,8 +41,10 @@ namespace Animation.Effects
 
                 yield return null;
             }
-        }
+        } 
+        #endregion
 
+        #region Scale
         // 커졌다가 다시 작아지는 효과
         public static IEnumerator Pulse(Transform transform, Vector3 scaleUpTo, float duration = 1f)
         {
@@ -66,8 +69,10 @@ namespace Animation.Effects
 
             // Reset scale
             transform.localScale = originScale;
-        }
+        } 
+        #endregion
 
+        #region Movement
         public static IEnumerator GatheringObjects(List<GameObject> objectList, Vector2 gatheringPos, float duration)
         {
             float t = 0f;
@@ -83,5 +88,18 @@ namespace Animation.Effects
                 yield return null;
             }
         }
+
+        public static IEnumerator MoveTo(Transform objToMove, Vector2 moveTo, float duration)
+        {
+            float timeElapsed = 0f;
+            while(timeElapsed / duration < 1f)
+            {
+                objToMove.position = Vector2.Lerp(objToMove.position, moveTo, timeElapsed / duration);
+                timeElapsed += Time.deltaTime;
+
+                yield return null;
+            }
+        }
+        #endregion
     }
 }

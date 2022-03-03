@@ -28,6 +28,7 @@ public class LerpMovement : MonoBehaviour
     protected bool isMovementActive = true;
     private float timeElapsed;
     private Vector2 startPos;
+
     private void Awake()
     {
         SetMovementType(movementType);
@@ -117,5 +118,10 @@ public class LerpMovement : MonoBehaviour
     {
         isMovementActive = condition;
     } 
+
+    public bool GetMovementCondition()
+    {
+        return isMovementActive;
+    }
     #endregion
 }
