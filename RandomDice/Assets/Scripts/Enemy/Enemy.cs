@@ -30,15 +30,15 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private Vector2 damageEffectOffset;
 
-    // Boss property
+    // Boss Field
     [SerializeField]
     private bool isBossEnemy = false;
 
     private void Awake()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
         distanceTracker = GetComponent<MovingDistanceTracker>();
         waypointFollower = GetComponent<WaypointFollower>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     #region Initialization
@@ -146,7 +146,6 @@ public class Enemy : MonoBehaviour
     {
         StartCoroutine(Move());
     }
-
     private IEnumerator Move()
     {
         SetMoving(true);
@@ -159,10 +158,11 @@ public class Enemy : MonoBehaviour
             distanceTracker.SetStartintPoint(startPoint);
 
             yield return StartCoroutine(waypointFollower.MoveToNextPoint(moveSpeed));
-            // Track distance
+
             distanceTracker.SaveDistancePassed();
         }
 
+        // 끝에 도달
         if (waypointFollower.GetNextPoint() == null)
         {
             isDead = true; // 이름 바꿀 것
@@ -170,7 +170,7 @@ public class Enemy : MonoBehaviour
             DeactivateEnemy();
         }
     }
-
+    #endregion
     public void DeactivateEnemy()
     {
         SetMoving(false);
@@ -184,13 +184,10 @@ public class Enemy : MonoBehaviour
             isBossEnemy = false;
         }
 
-
         distanceTracker.ResetDistance();
 
         gameObject.SetActive(false);
     }
-
-    #endregion
 
     #region Damage
     public void TakeDamage(float damage)

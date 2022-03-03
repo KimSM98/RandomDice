@@ -22,11 +22,7 @@ public class Bullet : MonoBehaviour
         animPlayer = GetComponent<AnimationPlayer>();
 
         lerpMovement = GetComponent<LerpMovement>();
-        lerpMovement.SetMovementType(LerpMovement.MovementType.UniformMotion);
-        //lerpMovement.UseRatioOfDistanceToSpeedWeight();
     }
-
-
     public void Init(Enemy _target, DiceType _type)
     {
         isShooting = true;
@@ -39,19 +35,9 @@ public class Bullet : MonoBehaviour
         StartMoving();
     }
 
+    #region Movement
     private void StartMoving()
     {
-        //float dist = Vector2.Distance(startPos, target.transform.position);
-        //float ratioOfDist = moveSpeed / dist;
-        //t += ratioOfDist * Time.deltaTime;
-
-        //Vector2 destination = target.transform.position;
-        //transform.position = Vector2.Lerp(startPos, destination, t);
-
-        //if (t >= 1f || target.IsDead())
-        //{
-        //    BulletExplosion();
-        //}
         StartCoroutine(BulletExplosionChecker());
         StartCoroutine(Move());
     }
@@ -60,12 +46,11 @@ public class Bullet : MonoBehaviour
     {
         lerpMovement.SetMoving(true);
 
-        //yield return StartCoroutine(lerpMovement.UniformMotion(transform.position, target.transform.position, 1f, moveSpeed));
         yield return StartCoroutine(lerpMovement.MoveLerp(target.transform, 1f, moveSpeed));
 
         isShooting = false;
-    }
-
+    } 
+    #endregion
 
     #region Explosion
     IEnumerator BulletExplosionChecker()

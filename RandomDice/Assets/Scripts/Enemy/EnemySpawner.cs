@@ -14,7 +14,7 @@ public class EnemySpawner : MonoBehaviour
     public MonsterType[] bossTypes;
     public GameObject gatheringPosObject;
     private Vector2 gatheringPos;
-    float totalHPOfEnemies = 0f;
+    private float totalHPOfEnemies = 0f;
 
     // Spawning
     private bool isSpawning = false;
@@ -95,12 +95,10 @@ public class EnemySpawner : MonoBehaviour
         // 보스가 Gathering 위치에 생성된 것을 보여주기 위해 잠깐 멈춘다.
         yield return new WaitForSeconds(0.3f);
 
-        // *****
         LerpMovement bossMovement = boss.GetComponent<LerpMovement>();
-        yield return StartCoroutine(bossMovement.DeceleratedMotion(spawnPos, 1.5f));
-        boss.StartMoving();
-        // *****
+        yield return StartCoroutine(bossMovement.MoveLerp(startWaypoint.transform, 1.5f)); // *****
 
+        boss.StartMoving();
     } 
     #endregion
 
@@ -135,7 +133,6 @@ public class EnemySpawner : MonoBehaviour
         enemyToInit.Init(statusType, RandomMonsterType(Monstertypes), startWaypoint, targetPlayerStatus);
         GetComponent<EnemyTargeter>().RegisterEnemyToList(enemyToInit);
     }
-
     private MonsterType RandomMonsterType(MonsterType[] types) 
     {
         int randomType = Random.Range(0, types.Length);

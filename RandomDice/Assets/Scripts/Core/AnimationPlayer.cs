@@ -5,15 +5,15 @@ using Animation.Core;
 
 public class AnimationPlayer : MonoBehaviour
 {
+    // Scriptable object인 AnimationType을 넣어야 한다.
     public AnimationType animType;
     
     private SpriteRenderer spriteRenderer;
-
-    private Sprite initSprite;
     private Sprite[] animSprites;
+    private Sprite initSprite;
+
     private float fps;
     WaitForSeconds frameRate;
-
     private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();

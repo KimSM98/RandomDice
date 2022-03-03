@@ -3,15 +3,14 @@ using UnityEngine;
 
 public class WaypointFollower : LerpMovement
 {
-    [SerializeField]
     private Waypoint currentWaypoint;
-    [SerializeField]
     private Waypoint nextWaypoint;
 
+    #region Waypoint Movements
     // Waypoints 순회
     public IEnumerator MoveAlongWaypoints(float moveSpeed = 1f)
     {
-        while(nextWaypoint != null && isMovementActive)
+        while (nextWaypoint != null && isMovementActive)
         {
             yield return StartCoroutine(MoveToNextPoint(moveSpeed));
         }
@@ -19,35 +18,25 @@ public class WaypointFollower : LerpMovement
 
     public IEnumerator MoveToNextPoint(float moveSpeed = 1f)
     {
-        Vector2 nextPos = nextWaypoint.transform.position;
-        float speedWeightToMoveSameSpeed = CalculateRatioOfDistance(moveSpeed);
-
-        yield return StartCoroutine(UniformMotion(currentWaypoint.transform.position, nextPos, 1f, speedWeightToMoveSameSpeed));
-
+        yield return StartCoroutine(MoveLerp(nextWaypoint.transform, 1f, moveSpeed));
         SetCurrentPoint(currentWaypoint.GetNextPoint());
-    }
+    } 
+    #endregion
 
-    // Waypoint 사이를 같은 속도로 이동하기 위한 스피드 가중치 계산
-    private float CalculateRatioOfDistance(float moveSpeed)
-    {
-        float distanceBetweenRoads = Vector2.Distance(currentWaypoint.transform.position, nextWaypoint.transform.position);
-        
-        return moveSpeed / distanceBetweenRoads;
-    }
-
+    #region Setter/Getter
     public void SetCurrentPoint(Waypoint point)
     {
         currentWaypoint = point;
         nextWaypoint = currentWaypoint.GetNextPoint();
     }
-
     public Waypoint GetCurrentPoint()
     {
         return currentWaypoint;
     }
-    
+
     public Waypoint GetNextPoint()
     {
         return nextWaypoint;
-    }
+    } 
+    #endregion
 }
