@@ -20,15 +20,18 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private List<Enemy> bosses;
 
+    #region Boss Spawn Timer
     [Header("Boss Spawn Timer")]
     public TimerDisplay timerDisplay;
     [SerializeField]
     private int bossSpawnTime = 20;
+    private TMPController timerTMPController; 
+    #endregion
 
     #region Unity Methods
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
@@ -39,11 +42,9 @@ public class GameManager : MonoBehaviour
 
         Time.timeScale = 1f;
 
-        playerStatuses = new List<PlayerStatus>();
-        enemySpawners = new List<EnemySpawner>();
-        diceManagers = new List<DiceManager>();
-        bosses = new List<Enemy>();
+        InitLists();
     }
+
 
     private void Start()
     {
@@ -88,10 +89,17 @@ public class GameManager : MonoBehaviour
     #region Boss Raid Loop
     IEnumerator BossRaidLoop()
     {
-        while(!IsPlayerAlive())
+        timerTMPController = timerDisplay.GetComponent<TMPController>();
+        string bossAppearStr = "보스 출현";
+
+        while (!IsPlayerAlive())
         {
+            // 보스 출현 시간 카운트
             yield return StartCoroutine(timerDisplay.RunTimer());
+            timerTMPController.SetText(bossAppearStr);
+            // 보스 출현
             yield return StartCoroutine(BossRaid());
+            // 보스 출현 시간 리셋
             timerDisplay.ResetTimer();
         }
     }
@@ -189,6 +197,14 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region List Method
+    private void InitLists()
+    {
+        playerStatuses = new List<PlayerStatus>();
+        enemySpawners = new List<EnemySpawner>();
+        diceManagers = new List<DiceManager>();
+        bosses = new List<Enemy>();
+    }
+
     public void AddPlayerStatus(PlayerStatus status)
     {
         playerStatuses.Add(status);

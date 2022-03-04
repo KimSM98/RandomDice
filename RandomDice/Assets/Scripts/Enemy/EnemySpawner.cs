@@ -113,15 +113,15 @@ public class EnemySpawner : MonoBehaviour
         boss.SetIsBossEnemy(true);
         boss.SetMoving(false);
 
-        // Entry to GameManager
-        GameManager.instance.AddBoss(boss);
-
         // 보스가 Gathering 위치에 생성된 것을 보여주기 위해 잠깐 멈춘다.
         yield return new WaitForSeconds(0.3f);
 
         yield return AnimationEffect.MoveTo(boss.transform, spawnPos, 1.5f);
 
         boss.StartMoving();
+
+        // Entry to GameManager
+        GameManager.instance.AddBoss(boss);
     } 
     #endregion
 
