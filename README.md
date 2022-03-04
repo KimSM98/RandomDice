@@ -21,4 +21,4 @@
 다이스을 랜덤하게 소환하여 몬스터 웨이브를 버티는 게임입니다.
 
 ## Video
-[![Video Label](http://img.youtube.com/vi/BJZfJB1LiKw/0.jpg)](https://youtu.be/BJZfJB1LiKw)
+[![Video Label](http://img.youtube.com/vi/iy0RlvhkpSk/0.jpg)](https://youtu.be/iy0RlvhkpSk)
