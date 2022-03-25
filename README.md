@@ -3,7 +3,7 @@
 ## 기본 정보
 개발 기간 : 2022.1.21 ~
 
-개발 일지 - Notion : https://www.notion.so/d6db287601b14a328b4ab972f9549766?v=8e18f6985c2a4bfaa90fcab702b73f72
+개발 일지 - Notion : https://witty-timer-8a6.notion.site/d6db287601b14a328b4ab972f9549766?v=8e18f6985c2a4bfaa90fcab702b73f72
 
 사용 엔진 : Unity 2019.4.9f1
 
